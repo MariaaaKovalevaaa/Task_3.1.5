@@ -13,6 +13,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * csrf - это Cookies same-origin policy (политика одного и того же происхождения cookies).
+ * Т.е. это гласит о том, что браузер может отправлять на сервер только те cookies, которые ранее были этим сервером назначены.
+ * Благодаря этому сайт злоумышленников не может получить наши cookies и от нашего имени совершать действия.
+ */
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -29,12 +35,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //Настраиваем конфигурацию самого Спринг Секьюрити
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()//отключили подделку межсайтовых запросов
                 .authorizeRequests()
-                .antMatchers("/index", "/").permitAll() //url-адреса "/" и "/index" разрешены всем юзерам, в т.ч. не аутентифицированным
-                .antMatchers("/admin/**").hasRole("ADMIN")//В "/admin/**" могут заходить только юзеры с ролью "ADMIN"
-                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                .anyRequest().authenticated()//Все остальные url-адреса доступны только аутентифицированным
+                .antMatchers("/index", "/", "/api/admin/**", "/api/user/**").permitAll() //url-адреса "/" и "/index" разрешены всем юзерам, в т.ч. не аутентифицированным
+                .antMatchers("api/admin/**").hasRole("ADMIN")//В "/admin/**" могут заходить только юзеры с ролью "ADMIN"
+                .antMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
+//                .anyRequest().authenticated()//Все остальные url-адреса доступны только аутентифицированным
+                .anyRequest().permitAll()
                 .and()//разделитель
 
                 .formLogin().successHandler(successUserHandler).permitAll()

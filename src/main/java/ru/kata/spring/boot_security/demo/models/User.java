@@ -6,13 +6,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.util.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * //UserDetails нужен д/того, чтобы преобразовать юзера из БД к определенному стандарту, чтобы его понял Спринг Секьюрити.
  * //Т.е. UserDetails - это такая обертка д/Entity-класса.
  * //UserDetails заведует самым основным: полномочиями - getAuthorities(), паролем - getPassword() и
  * // именем юзера - getUsername()
+ *
+ * Аннотации @NotEmpty, @Size, @Email - это проверка на валидность.
+ * Проверка на то, что объект типа User пришел от клиента корректный
  **/
 @Entity
 @Table(name = "users")
@@ -22,12 +29,16 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "Имя не может быть пустым.")
+    @Size(min = 2, max = 10, message = "Имя должно состоять от 2 до 10 символов.")
     @Column(name = "username")
     private String username;
-
+    @NotEmpty(message = "Фамилия не может быть пустым.")
+    @Size(min = 2, max = 10, message = "Фамилия должно состоять от 2 до 10 символов.")
     @Column(name = "lastname")
     private String lastname;
 
+    @Size (min = 14, message = "Возраст может быть от 14 лет.")
     @Column(name = "age")
     private Byte age;
 
@@ -36,6 +47,8 @@ public class User implements UserDetails {
     private String email;
     @Column(name = "password")
     private String password;
+
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     //Здесь жадная загрузка, чтобы сразу грузились все дочерние зависимости юзера. fetch (извлечение)
@@ -48,7 +61,23 @@ public class User implements UserDetails {
     public User() {
     }
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public User(String username, String lastname, Byte age, String email, String password, List<Role> roles) {
+        this.username = username;
+        this.lastname = lastname;
+        this.age = age;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public User(Long id, String username, String lastname, Byte age, String email, String password,
+                List<Role> roles) {
+        this.id = id;
         this.username = username;
         this.lastname = lastname;
         this.age = age;

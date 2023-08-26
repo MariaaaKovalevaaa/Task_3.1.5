@@ -2,11 +2,11 @@ package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.models.Role;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.DTO.UserDTO;
+import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.List;
@@ -45,17 +45,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).get();
     }
 
-
-
-
     @Override
     @Transactional
     public void updateUser(User updateUser, Long id) {
         User user_from_DB = userRepository.findById(id).get(); //Нашли в БД, кого хотим редактировать
         user_from_DB.setUsername(updateUser.getUsername());
-        user_from_DB.setLastname(updateUser.getLastname()); //сохраняет
-        user_from_DB.setAge(updateUser.getAge()); //сохраняет
-        user_from_DB.setEmail(updateUser.getEmail()); //сохраняет
+        user_from_DB.setLastname(updateUser.getLastname());
+        user_from_DB.setAge(updateUser.getAge());
+        user_from_DB.setEmail(updateUser.getEmail());
         user_from_DB.setRoles(updateUser.getRoles());
 
         if (user_from_DB.getPassword().equals(updateUser.getPassword())) {
@@ -83,4 +80,6 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
+
+
 }

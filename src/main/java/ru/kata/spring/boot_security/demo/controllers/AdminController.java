@@ -1,118 +1,191 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import ru.kata.spring.boot_security.demo.models.Role;
-import ru.kata.spring.boot_security.demo.models.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.services.RoleService;
+import ru.kata.spring.boot_security.demo.DTO.UserDTO;
+import ru.kata.spring.boot_security.demo.exception_handling.NoSuchUserException;
+import ru.kata.spring.boot_security.demo.exception_handling.UserNotCreatedException;
+import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
-import java.security.Principal;
+import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Controller
-@RequestMapping("/admin")
+/**
+ * RestController – это Controller, который управляет REST запросами и ответами.
+ * Такие Спринг-приложении, которые принимают http-запросы и не реализуют представления,
+ * а отдают сырые данные в формате JSON (в 99% случаев, т.к. это самый распространенный формат),
+ * называются REST API.
+ * По принятому стандарту url любого запроса в REST API должно начинаться с /api,
+ * поэтому всему rest-контроллеру ставим такой url
+ * Теперь, когда со стороны клиента, т.е. браузера, будет приходить запрос, содержащий в url "/api",
+ * то Спринг с помощью функционала проекта Jackson будет конвертировать данные в JSON-формат
+ * и в теле http-response будет передан JSON, который отобразится в браузере.
+ * <p>
+ * Чтобы получать о запросах и ответа больше инфы, есть разные проги. Одна из них - Postman.
+ * Т.е. в качестве клиента будет не браузер, а Postman.
+ */
+
+@CrossOrigin //позволяет выполнять запросы между разными источниками
+@RestController
+@RequestMapping("/api/admin")
 public class AdminController {
 
-    private final RoleService roleService;
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper; ///используется, чтобы конвертировать UserDTO в User и наоборот.
 
     @Autowired
-    public AdminController(RoleService roleService, UserService userService, PasswordEncoder passwordEncoder) {
-        this.roleService = roleService;
+    public AdminController(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
+        this.modelMapper = modelMapper;
     }
 
-    @GetMapping()
-    public String showAllUsers(@ModelAttribute ("user") User user, Principal principal, Model model) {
-        User authenticatedUser = userService.findByUsername(principal.getName()); //Нашли в БД юзера, который аутентифицировался
-
-        //Добавляем в модель данные, чтобы отправить их на вьюшку admin-page
-        model.addAttribute ("authenticatedUser", authenticatedUser); //Добавили самого юзера из БД
-        model.addAttribute ("roleOfAuthenticatedUser", authenticatedUser.getRoles()); //Добавили его роли
-        model.addAttribute("users", userService.findAll());// Добавили всех юзеров из БД
-        model.addAttribute( "AllRoles", roleService.findAll()); //Добавили все роли из БД
-        return "admin-page";
+    /**
+     * Метод получения списка всех юзеров.
+     * Аннотация GET, потому что мы хотим получить список.
+     * Когда со стороны клиента, т.е. браузера, будет приходить запрос "/api/users",
+     * то Спринг с помощью функционала проекта Jackson будет конвертировать данные в JSON-формат
+     * и в теле http-response будет передан список юзеров в формате JSON, который отобразится в браузере.
+     * Метод ниже среагирует на запрос "/users", посланный с помощью метода GET
+     * Здесь тоже используем конвертацию с помощью ModelMapper - из User в UserDTO,
+     * который будет отправлять в качестве ответа клиенту.
+     * Клиенту не нужны все поля User, ему нужно видеть только поля UserDTO
+     * <p>
+     * map(this::convertToUserDTO) - означает, что каждый элемент списка сконвертировали в UserDTO
+     * затем создали из них список
+     */
+    @GetMapping("/users")
+    public List<UserDTO> showAllUsers() {
+        return userService.findAll()
+                .stream()
+                .map(this::convertToUserDTO)
+                .collect(Collectors.toList());
     }
 
-    @GetMapping("/user-profile/{id}")
-    public String findUser(@PathVariable("id") Long id, Model model) {
+    /**
+     * Метод получения юзера по id.
+     * В теле http-response будет передан юзер в формате JSON,
+     * который отобразится в браузере.
+     * Метод ниже среагирует на запрос "/users/{id}", посланный с помощью метода GET
+     * ResponseEntity - это обертка для http-response, т.е. по сути мы получаем http-response, только в обертке
+     * Исключение NoSuchUserException регулируется UserGlobalExceptionHandler, который будет ответственен за возвращение нам
+     * JSONа с инфой. Т.е. этот JSON будет возвращаться при выбрасывании NoSuchUserException.
+     * <p>
+     * Здесь тоже используем конвертацию с помощью ModelMapper - из User в UserDTO,
+     * который будет отправлять в качестве ответа клиенту.
+     * Клиенту не нужны все поля User, ему нужно видеть только поля UserDTO
+     */
+    @GetMapping("/users/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Long id) {
+        UserDTO userDTO = convertToUserDTO(userService.findUserById(id));//нужно сразу конвертировать в UserDTO, потому что это для клиента
+        if (userDTO == null) {
+            throw new NoSuchUserException("Пользователя с ID = " + id + " нет в БД");
+        }
+        return new ResponseEntity<>(userDTO, HttpStatus.FOUND);
+    }
+
+    /**
+     * Метод добавления юзера.
+     * Метод ниже среагирует на запрос "/api/admin/users", посланный с помощью метода POST
+     * В этом методе нам нужно использовать инфу о новом юзере, которую посылаем в теле запроса,
+     * поэтому используем аннотацию @RequestBody (тело запроса), в котором UserDTO userDTO
+     * UserDTO - это пройслойка м/у тем, что прислал клиент, и тем, что будет принимать сервер.
+     * Т.е. на сервере этот объект, присланный от клиента, можно дополнить другими полями, либо,
+     * наоборот, убрать какие-то поля, т.е. привести объект от клиента к тому виду, который нужен серверу.
+     * Для этого на сервере UserDTO будет конвертирован в User.
+     * <p>
+     * С помощью аннотации @RequestBody параметр в методе UserDTO userDTO, принятый в формате JSON от клиента,
+     * за кулисами с помощью Jackson конвертируется из JSON в java-объект
+     * Аннотация @Valid проверяет полученный от клиента объект на валидность
+     * по аннотациям в классе User - @NotEmpty, @Size, @Email
+     * BindingResult нужен, чтобы узнать, были ли ошибки валидации и какие
+     * Под UserNotCreatedException нужен метод @ExceptionHandler в классе UserGlobalExceptionHandler,
+     * чтобы он его поймал и прислал какой-то JSON
+     */
+
+    @PostMapping("/users")
+    public ResponseEntity<User> addNewUser(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            StringBuilder info_about_errors = new StringBuilder(); //Создали строку, в которую поместим ошибки
+            List<FieldError> fields_of_errors = bindingResult.getFieldErrors(); //Получили список из полей, где произошли ошибки
+
+            for (FieldError error : fields_of_errors) { //Прошлись по ошибкам
+                info_about_errors.append(error.getField()) // в строку добавили само поле
+                        .append(" - ")
+                        .append(error.getDefaultMessage()) //добавили сообщение ошибки
+                        .append(";");
+            }
+
+            throw new UserNotCreatedException(info_about_errors.toString());
+        }
+        User user = convertToUser(userDTO); // Конвертируем UserDTO в User перед сохранением в БД
+        userService.saveUser(user); // Сохраняем в БД
+        return new ResponseEntity<>(user, HttpStatus.OK); //Ответ в виде JSON
+    }
+
+    /**
+     * Метод изменения юзера.
+     * В аннотации PUT, т.к. мы апдейтим данные.
+     * в теле запроса будут переданы те данные, на которые нужно изменить. И они же придут ответом.
+     * С помощью аннотации @RequestBody параметр в методе User user, принятый в формате JSON от клиента,
+     * за кулисами с помощью Jackson конвертируется из JSON в java-объект
+     */
+
+    @PutMapping("/users")
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
+        userService.updateUser(user, user.getId());
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    /**
+     * Метод удаления юзера.
+     * Сначала наход юзера по id, проверяем, что он существует в БД и тогда удаляем.
+     * Если такого нет, то выбрасываем исключение.
+     */
+
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
         User user = userService.findUserById(id);
-        model.addAttribute("user", user);
-        model.addAttribute("AllRoles", user.getRoles());
-        return "user-page";
-    }
-
-    /**
-     * //Метод, выводящий форму для редактирования - edit
-     * // Вьюшка "edit". Из нее данные отправляются на контроллер,
-     * // т.е. на @RequestMapping("/admin"), а там на метод, принимающий PATCH-запросы.
-     * // Таким будет метод - save_changes с аннотацией @PatchMapping
-     * //В методе editUser помещаем в модель юзера с переданным из url-адреса id
-     **/
-    @GetMapping("/edit/{id}")
-    public String editUser(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("user", userService.findUserById(id));
-        model.addAttribute("AllRoles", roleService.findAll());
-        return "redirect:/admin";
-    }
-
-    /**
-     * //Метод, который принимает patch-запрос от вьюшки "edit"
-     * // т.е. когда во view "edit" форму заполнили,
-     * // нажали кнопку "Внести изменения", нас перебросит на url-адрес "/admin" на PATCH-метод
-     * //@PatchMapping, потому что мы вносим при этом изменения, это заплатка сверху на то, что было
-     * //Сюда придут новые данные юзера, которые хотят изменить
-     * //И так, это метод сохраняющий изменения, которые пришли с формы метода editUser - это будет
-     * // метод save_changes с аннотацией PATCH - @PatchMapping,
-     * // Вьюшка будет редирект на url "/list-users"
-     **/
-    @PatchMapping("/update/{id}")
-    public String updateUser(@ModelAttribute("user") User updateUser, @PathVariable("id") Long id) {
-        userService.updateUser(updateUser, id); //Находим по id того юзера, которого надо изменить
-        return "redirect:/admin";
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public String deleteUserById(@PathVariable("id") Long id) {
+        if (user == null) {
+            throw new NoSuchUserException("Пользователь с id = " + id + " не найден в БД и не может быть удален");
+        }
         userService.deleteUserById(id);
-        return "redirect:/admin";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
     /**
-     * //Метод создания юзера - registration. Здесь хотим получить форму д/заполнения, поэтому аннотация с GET
-     * // Будет появляться вьюшка "registration" для заполнения данных и потом перенаправлятся
-     * // в контроллер на метод с аннотацией POST, поэтому на @RequestMapping("/admin"),
-     * // а там на метод с аннотацией POST, т.е. @PostMapping(/create-user),
-     * // А таким методом будет метод saveUser
-     **/
-    @GetMapping("/new")
-    public String form_for_create_user(Model model, User user) {
-        model.addAttribute("user", new User());
-        List<Role> roles = (List<Role>) roleService.findAll();
-        model.addAttribute("AllRoles", roles);
-        return "redirect:/admin";
+     * Метод конвертации UserDTO (то, что пришло от клиента) в User
+     * ModelMapper используется, чтобы конвертировать UserDTO в User и наоборот.
+     * В нем задаем исходный объект и целевой класс, т.е. тот класс,
+     * в объект которого нужно конвертировать то, что пришло от клиента
+     * ModelMapper найдет все поля в userDTO, которые совпадают по названию в User,
+     * и положит все поля в User из userDTO
+     */
+    public User convertToUser(UserDTO userDTO) {
+        return modelMapper.map(userDTO, User.class);
     }
 
     /**
-     * //Метод сохранения только что добавленного юзера - saveNewUser
-     * //Метод, принимающий POST-запросы, т.е. @PostMapping(), после выполнения будет редирект на вьюшку "/list-users"
-     * //User user - это созданный юзер по html-форме, которая реализована во view "registration"
-     * //Аннотация @ModelAttribute создаст юзера с теми значениями, которые придут из формы вьюшки "registration".
-     * //Мы здесь принимаем в аргумент юзера, который пришел из заполненной формы
-     * //Аннотация @ModelAttribute делает: создание нового объекта, добавление значений
-     * //в поля этого объекта и затем добавление этого объекта в модель
-     **/
+     * Метод конвертации User в UserDTO
+     * Нужно для отправки ответа клиенту.
+     * Клиенту не нужно видеть всех полей User
+     */
 
-    @PostMapping("/create")
-    public String saveNewUser(@ModelAttribute("user") User user) {
-        userService.saveUser(user); // Добавляем этого юзера в БД
-        return "redirect:/admin";
+    public UserDTO convertToUserDTO(User user) {
+        return modelMapper.map(user, UserDTO.class);
     }
 }
+
+
+
+
+
