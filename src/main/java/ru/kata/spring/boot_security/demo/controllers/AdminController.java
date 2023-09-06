@@ -14,8 +14,8 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * RestController – это Controller, который управляет REST запросами и ответами.
@@ -46,6 +46,15 @@ public class AdminController {
         this.modelMapper = modelMapper;
     }
 
+    /*
+    Метод для получения данных, которые будут отображаться в панели (mail и роль)
+     */
+
+    @GetMapping("/showInfoUser")
+    public ResponseEntity<User> authorization_data (Principal principal) {
+        return ResponseEntity.ok (userService.findByUsername(principal.getName()));
+    }
+
     /**
      * Метод получения списка всех юзеров.
      * Аннотация GET, потому что мы хотим получить список.
@@ -60,12 +69,19 @@ public class AdminController {
      * map(this::convertToUserDTO) - означает, что каждый элемент списка сконвертировали в UserDTO
      * затем создали из них список
      */
+//    @GetMapping("/users")
+//    public List<UserDTO> showAllUsers() {
+//        return userService.findAll()
+//                .stream()
+//                .map(this::convertToUserDTO)
+//                .collect(Collectors.toList());
+//    }
+
+// Переписала метод получения юзеров. Решила, что здесь должны быть юзеры в их обычном виде, а не в DTO, т.к. это инфа д/админа
     @GetMapping("/users")
-    public List<UserDTO> showAllUsers() {
-        return userService.findAll()
-                .stream()
-                .map(this::convertToUserDTO)
-                .collect(Collectors.toList());
+    public ResponseEntity<List<User>> allUsers() {
+        List <User> listUsers = userService.findAll();
+        return new ResponseEntity<>(listUsers, HttpStatus.OK);
     }
 
     /**
@@ -81,14 +97,26 @@ public class AdminController {
      * который будет отправлять в качестве ответа клиенту.
      * Клиенту не нужны все поля User, ему нужно видеть только поля UserDTO
      */
+//    @GetMapping("/users/{id}")
+//    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Long id) {
+//        UserDTO userDTO = convertToUserDTO(userService.findUserById(id));//нужно сразу конвертировать в UserDTO, потому что это для клиента
+//        if (userDTO == null) {
+//            throw new NoSuchUserException("Пользователя с ID = " + id + " нет в БД");
+//        }
+//        return new ResponseEntity<>(userDTO, HttpStatus.FOUND);
+//    }
+
+// Переписала метод получения юзера по id. Решила, что здесь должен быть юзер в обычном виде, а не в DTO, т.к. это инфа д/админа
     @GetMapping("/users/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Long id) {
-        UserDTO userDTO = convertToUserDTO(userService.findUserById(id));//нужно сразу конвертировать в UserDTO, потому что это для клиента
-        if (userDTO == null) {
+    public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
+        User user = userService.findUserById(id);
+        if (user == null) {
             throw new NoSuchUserException("Пользователя с ID = " + id + " нет в БД");
         }
-        return new ResponseEntity<>(userDTO, HttpStatus.FOUND);
+        return new ResponseEntity<>(user, HttpStatus.FOUND);
     }
+
+
 
     /**
      * Метод добавления юзера.
@@ -134,15 +162,24 @@ public class AdminController {
      * Метод изменения юзера.
      * В аннотации PUT, т.к. мы апдейтим данные.
      * в теле запроса будут переданы те данные, на которые нужно изменить. И они же придут ответом.
-     * С помощью аннотации @RequestBody параметр в методе User user, принятый в формате JSON от клиента,
+     * С помощью аннотации @RequestBody параметр в методе UserDTO userDTO, принятый в формате JSON от клиента,
      * за кулисами с помощью Jackson конвертируется из JSON в java-объект
      */
 
     @PutMapping("/users")
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
-        userService.updateUser(user, user.getId());
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO) {
+        User userFromWebPage = convertToUser(userDTO);
+        userService.updateUser(userFromWebPage, userFromWebPage.getId());
+        return new ResponseEntity<>(userFromWebPage, HttpStatus.OK);
     }
+
+
+//    @PutMapping("/users")
+//    public ResponseEntity<User> updateUser(@RequestBody User user) {
+//        userService.updateUser(user, user.getId());
+//        return new ResponseEntity<>(user, HttpStatus.OK);
+//    }
+
 
     /**
      * Метод удаления юзера.
