@@ -35,13 +35,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //Настраиваем конфигурацию самого Спринг Секьюрити
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()//отключили подделку межсайтовых запросов
+        http
                 .authorizeRequests()
-                .antMatchers("/index", "/", "/api/admin/**", "/api/user/**").permitAll() //url-адреса "/" и "/index" разрешены всем юзерам, в т.ч. не аутентифицированным
-                .antMatchers("api/admin/**").hasRole("ADMIN")//В "/admin/**" могут заходить только юзеры с ролью "ADMIN"
-                .antMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
-//                .anyRequest().authenticated()//Все остальные url-адреса доступны только аутентифицированным
-                .anyRequest().permitAll()
+                .antMatchers("/index", "/login").permitAll() //url-адреса "/" и "/index" разрешены всем юзерам, в т.ч. не аутентифицированным
+//                .antMatchers("/api/user/**").permitAll()
+//                .antMatchers("/api/admin/**").permitAll()
+                .antMatchers("/api/user/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()//Все остальные url-адреса доступны только аутентифицированным
                 .and()//разделитель
 
                 .formLogin().successHandler(successUserHandler).permitAll()

@@ -78,10 +78,14 @@ public class AdminController {
 //    }
 
 // Переписала метод получения юзеров. Решила, что здесь должны быть юзеры в их обычном виде, а не в DTO, т.к. это инфа д/админа
+//    @GetMapping("/users")
+//    public ResponseEntity<List<User>> allUsers() {
+//        List <User> listUsers = userService.findAll();
+//        return new ResponseEntity<>(listUsers, HttpStatus.OK);
+//    }
     @GetMapping("/users")
-    public ResponseEntity<List<User>> allUsers() {
-        List <User> listUsers = userService.findAll();
-        return new ResponseEntity<>(listUsers, HttpStatus.OK);
+    public List<User> allUsers() {
+        return userService.findAll();
     }
 
     /**

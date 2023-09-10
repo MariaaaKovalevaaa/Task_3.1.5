@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -38,9 +39,9 @@ public class User implements UserDetails {
     @Column(name = "lastname")
     private String lastname;
 
-    @Size (min = 14, message = "Возраст может быть от 14 лет.")
+    @Min(14)
     @Column(name = "age")
-    private Byte age;
+    private Integer age;
 
     @Email
     @Column(name = "email")
@@ -66,7 +67,7 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public User(String username, String lastname, Byte age, String email, String password, List<Role> roles) {
+    public User(String username, String lastname, Integer age, String email, String password, List<Role> roles) {
         this.username = username;
         this.lastname = lastname;
         this.age = age;
@@ -75,7 +76,7 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public User(Long id, String username, String lastname, Byte age, String email, String password,
+    public User(Long id, String username, String lastname, Integer age, String email, String password,
                 List<Role> roles) {
         this.id = id;
         this.username = username;
@@ -115,11 +116,11 @@ public class User implements UserDetails {
         this.lastname = lastname;
     }
 
-    public Byte getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(Byte age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 

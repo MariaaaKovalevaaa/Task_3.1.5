@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.DTO;
 
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -25,8 +26,8 @@ public class UserDTO {
     @Size(min = 2, max = 10, message = "Фамилия должно состоять от 2 до 10 символов.")
     private String lastname;
 
-    @Size (min = 14, message = "Возраст может быть от 14 лет.")
-    private Byte age;
+    @Min(14)
+    private Integer age;
 
     @Email
     private String email;
@@ -50,11 +51,11 @@ public class UserDTO {
         this.lastname = lastname;
     }
 
-    public Byte getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(Byte age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
