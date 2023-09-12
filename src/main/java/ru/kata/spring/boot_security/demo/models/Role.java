@@ -13,36 +13,33 @@ public class Role implements GrantedAuthority {
     private Long id;
 
     @Column(name = "role")
-    private String role;
+    private String name;
 
     public Role() {
     }
-    public Role(String role) {
-        this.role = role;
+    public Role(String name) {
+        this.name = name;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getRole() {
-        return role;
+    public String getName() {
+        return name;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String getAuthority() {
-        return getRole();
+        return getName();
     }
 
     @Override
     public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", name='" + role + '\'' +
-                '}';
+        return name.replace("ROLE_", "");
     }
 }

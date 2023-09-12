@@ -34,12 +34,12 @@ public class DatabaseInitializer implements ApplicationListener<ContextRefreshed
 
         //Создали роль юзер
         Role userRole = new Role();
-        userRole.setRole("ROLE_USER");
+        userRole.setName("ROLE_USER");
         roleRepository.save(userRole);
 
         //Создали роль админ
         Role adminRole = new Role();
-        adminRole.setRole("ROLE_ADMIN");
+        adminRole.setName("ROLE_ADMIN");
         roleRepository.save(adminRole);
 
         List<Role> userRoles = Arrays.asList(userRole);
@@ -48,7 +48,7 @@ public class DatabaseInitializer implements ApplicationListener<ContextRefreshed
         User admin = new User();
         admin.setUsername("admin");
         admin.setLastname("admin");
-        admin.setAge(67);
+        admin.setAge((byte) 67);
         admin.setEmail("admin@mail.ru");
         admin.setPassword(passwordEncoder.encode("admin"));
         admin.setRoles(adminRoles);
@@ -57,7 +57,7 @@ public class DatabaseInitializer implements ApplicationListener<ContextRefreshed
         User user = new User();
         user.setUsername("user");
         user.setLastname("user");
-        user.setAge(82);
+        user.setAge((byte) 82);
         user.setEmail("user@mail.ru");
         user.setPassword(passwordEncoder.encode("user"));
         user.setRoles(userRoles);

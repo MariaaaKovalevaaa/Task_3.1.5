@@ -12,13 +12,14 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * //UserDetails нужен д/того, чтобы преобразовать юзера из БД к определенному стандарту, чтобы его понял Спринг Секьюрити.
  * //Т.е. UserDetails - это такая обертка д/Entity-класса.
  * //UserDetails заведует самым основным: полномочиями - getAuthorities(), паролем - getPassword() и
  * // именем юзера - getUsername()
- *
+ * <p>
  * Аннотации @NotEmpty, @Size, @Email - это проверка на валидность.
  * Проверка на то, что объект типа User пришел от клиента корректный
  **/
@@ -34,6 +35,7 @@ public class User implements UserDetails {
     @Size(min = 2, max = 10, message = "Имя должно состоять от 2 до 10 символов.")
     @Column(name = "username")
     private String username;
+
     @NotEmpty(message = "Фамилия не может быть пустым.")
     @Size(min = 2, max = 10, message = "Фамилия должно состоять от 2 до 10 символов.")
     @Column(name = "lastname")
@@ -41,15 +43,14 @@ public class User implements UserDetails {
 
     @Min(14)
     @Column(name = "age")
-    private Integer age;
+    private Byte age;
 
     @Email
     @Column(name = "email")
     private String email;
+
     @Column(name = "password")
     private String password;
-
-
 
     @ManyToMany(fetch = FetchType.EAGER)
     //Здесь жадная загрузка, чтобы сразу грузились все дочерние зависимости юзера. fetch (извлечение)
@@ -62,23 +63,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public User(String username, String lastname, Integer age, String email, String password, List<Role> roles) {
-        this.username = username;
-        this.lastname = lastname;
-        this.age = age;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
-    }
-
-    public User(Long id, String username, String lastname, Integer age, String email, String password,
-                List<Role> roles) {
-        this.id = id;
+    public User(String username, String lastname, Byte age, String email, String password, List<Role> roles) {
         this.username = username;
         this.lastname = lastname;
         this.age = age;
@@ -91,22 +76,14 @@ public class User implements UserDetails {
         return id;
     }
 
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
 
     public String getLastname() {
         return lastname;
@@ -116,11 +93,11 @@ public class User implements UserDetails {
         this.lastname = lastname;
     }
 
-    public Integer getAge() {
+    public Byte getAge() {
         return age;
     }
 
-    public void setAge(Integer age) {
+    public void setAge(Byte age) {
         this.age = age;
     }
 
@@ -132,20 +109,25 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
-    }
-
     @Override
     public String getPassword() {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
-    public String getUsername() {
-        return username;
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
     }
 
     @Override
@@ -169,13 +151,16 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", roles=" + roles +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return username.equals(user.username) && lastname.equals(user.lastname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, lastname);
     }
 }
 

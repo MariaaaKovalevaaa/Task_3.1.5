@@ -1,10 +1,16 @@
 package ru.kata.spring.boot_security.demo.DTO;
 
 
+import org.springframework.security.core.GrantedAuthority;
+import ru.kata.spring.boot_security.demo.models.Role;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * DTO - Data Transfer Object (Объект для передачи данных) - Это слой между данными клиента и между моделью на сервере.
@@ -27,13 +33,25 @@ public class UserDTO {
     private String lastname;
 
     @Min(14)
-    private Integer age;
+    private Byte age;
 
     @Email
     private String email;
 
-
     private String password;
+
+    private List<Role> roles = new ArrayList<>();
+
+    public UserDTO() {
+    }
+    public UserDTO(String username, String lastname, Byte age, String email, String password, List<Role> roles) {
+        this.username = username;
+        this.lastname = lastname;
+        this.age = age;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
 
     public String getUsername() {
         return username;
@@ -51,11 +69,11 @@ public class UserDTO {
         this.lastname = lastname;
     }
 
-    public Integer getAge() {
+    public Byte getAge() {
         return age;
     }
 
-    public void setAge(Integer age) {
+    public void setAge(Byte age) {
         this.age = age;
     }
 
@@ -73,5 +91,17 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
     }
 }
