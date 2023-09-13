@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,16 +40,16 @@ public class AdminController {
 
     private final UserService userService;
     private final RoleService roleService;
-    private final ModelMapper modelMapper; ///используется, чтобы конвертировать UserDTO в User и наоборот.
+//    private final ModelMapper modelMapper; ///используется, чтобы конвертировать UserDTO в User и наоборот.
 
     @Autowired
-    public AdminController(UserService userService, RoleService roleService, ModelMapper modelMapper) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
-        this.modelMapper = modelMapper;
+//        this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/showInfoUser")
+    @GetMapping("/showAccount")
     public ResponseEntity<User> showInfoUser (Principal principal) {
         return ResponseEntity.ok (userService.findByUsername(principal.getName()));
     }
@@ -75,7 +74,7 @@ public class AdminController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> addNewUser(@RequestBody @Valid User user, BindingResult bindingResult) {
+    public ResponseEntity<User> addNewUser(@RequestBody @Valid User newUser, @RequestParam("roles") String[] roles, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             StringBuilder info_about_errors = new StringBuilder(); //Создали строку, в которую поместим ошибки
@@ -91,8 +90,9 @@ public class AdminController {
             throw new UserNotCreatedException(info_about_errors.toString());
         }
 //        User user = convertToUser(userDTO);
-        userService.saveUser(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        newUser.setRoles(roleService.createCollectionRoles(roles));
+        userService.saveUser(newUser);
+        return new ResponseEntity<>(newUser, HttpStatus.OK);
 
     }
 

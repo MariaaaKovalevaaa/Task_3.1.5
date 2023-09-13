@@ -2,6 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
+
 <head>
 
     <meta charset="UTF-8">
@@ -14,7 +15,7 @@
     rel (от relationship) – это атрибут, описывающий тег href-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 
     <!--    Иконка сайта-->
     <link rel="icon" href="https://img.freepik.com/free-icon/leaf_318-654663.jpg">
@@ -45,7 +46,7 @@
 
     <div class="col-2">
 
-        <!--********** Вертикальная левая панель-->
+        <!---------------------------- Вертикальная левая панель------------------------------>
         <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 
             <button class="nav-link active" id="v-pills-admin-tab" data-bs-toggle="pill" data-bs-target="#v-pills-admin"
@@ -65,11 +66,10 @@
         <div class="col-10">
             <div class="tab-content" id="v-pills-tabContent">
 
-                <!--********** Закладка Админа справа-->
+                <!-------------------- Закладка Админа справа-------------->
                 <div class="tab-pane fade show active" id="v-pills-admin" role="tabpanel"
                      aria-labelledby="v-pills-admin-tab">
 
-                    <!-- заголовок-->
                     <p class="fw-bold fs-4">Admin panel</p>
 
                     <!--Это вкладки: Users table с id="nav-users_table-tab", которая вызывает блок под id "#nav-users_table" и
@@ -87,11 +87,11 @@
                         </div>
                     </nav>
 
-                    <!--                    <!-КНОПКА TABLE USERS Список юзеров-->
+                    <!--------КНОПКА TABLE USERS Список юзеров-->
                     <!--Это блок список юзеров под id #nav-users_table", который раскрывается, когда нажимаешь button "Users table" от админа-->
                     <div class="tab-content" id="nav-tabContent">
 
-                        <!--********** Закладка горизонтальной панели с таблицей со всеми пользователями-->
+                        <!-------------- Закладка горизонтальной панели с таблицей со всеми пользователями--------->
                         <div class="tab-pane fade show active" id="nav-users_table" role="tabpanel"
                              aria-labelledby="nav-users_table-tab">
 
@@ -116,7 +116,7 @@
                             </table>
                         </div>
 
-                        <!--                        <! КНОПКА NEW USER Форма для добавления нового юзера-->
+                        <!-- КНОПКА NEW USER Форма для добавления нового юзера-->
                         <!--Это блок под id "#nav-new_user", который раскрывается, когда нажимаешь вторую вкладку button "New user" под id "nav-new_user-tab"-->
                         <div class="tab-pane fade" id="nav-new_user" role="tabpanel"
                              aria-labelledby="nav-new_user-tab">
@@ -152,7 +152,8 @@
                                     <div class="mb-3">
                                         <label for="create-email"
                                                class="form-label fw-bold">Email</label>
-                                        <input type="email" class="form-control" id="create-email"
+                                        <input type="email" class="form-control"
+                                               id="create-email"
                                                placeholder="Email"
                                                required>
                                     </div>
@@ -182,9 +183,8 @@
                     </div>
                 </div>
 
-                <!--********** Таблица с информацией о текущем пользователе-->
+                <!---------------- Таблица с информацией о текущем пользователе-------->
                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="user-tab">
-                    <!--********** Это заголовок-->
                     <div class="page-header" style="margin-top: 12px">
                         <h2>User information-page</h2>
                     </div>
@@ -202,7 +202,7 @@
                                 </tr>
                                 </thead>
                                 <tbody id="tableUser">
-                                <!--********** СКРИПТ **********-->
+                                <!-- СКРИПТ -->
                                 </tbody>
                             </table>
                         </div>
@@ -213,7 +213,7 @@
     </div>
 </div>
 
-<!--МОДАЛЬНОЕ ОКНО ДЛЯ EDIT-->
+<!-------------------------МОДАЛЬНОЕ ОКНО ДЛЯ EDIT------------------>
 
 <div class="modal" tabindex="-1" id="editModal"
      aria-labelledby="EditModalLabel" aria-hidden="true">
@@ -227,7 +227,6 @@
                         aria-label="Close"></button>
                 <span aria-hidden="true">&times;</span> <!-----Это крестик---->
             </div>
-
             <!---- Основное содержимое модального окна EDIT -->
             <div class="modal-body text-center">
                 <div class="d-flex justify-content-center align-items-center container">
@@ -284,14 +283,14 @@
                             </div>
 
                             <div class="mb-3">
-                                <label><b>Role</b></label>
+                                <label for="edit-roles"><b>Role</b></label>
                                 <select multiple class="form-control col-12"
                                         size="2"
                                         id="edit-roles"
                                         required>
-                                    <!--Скрипт---->
-                                    <!--<option value="ROLE_USER">USER</option>-->
-                                    <!--<option value="ROLE_ADMIN">ADMIN</option>-->
+<!--                                    Скрипт&#45;&#45;-->
+<!--                                    <option value="ROLE_USER">USER</option>-->
+<!--                                    <option value="ROLE_ADMIN">ADMIN</option>-->
                                 </select>
                             </div>
 
@@ -403,7 +402,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label><b>Role</b></label>
+                                <label for="delete-roles" ><b>Role</b></label>
                                 <select multiple class="form-control col-12"
                                         size="2"
                                         id="delete-roles"
@@ -434,7 +433,12 @@
 
 
 <!--Подключаем JavaScript-файл, который сами создали-->
-<script type="text/javascript" src="/js/admin-page.js"></script>
+<script type="text/javascript" src="/js/currentUser.js"></script>
+<script type="text/javascript" src="/js/delete-modal.js"></script>
+<script type="text/javascript" src="/js/edit-modal.js"></script>
+<script type="text/javascript" src="/js/formNew.js"></script>
+<script type="text/javascript" src="/js/navbar.js"></script>
+<script type="text/javascript" src="/js/tableUsers.js"></script>
 
 <!-- Подключаем jQuery library -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

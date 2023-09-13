@@ -9,7 +9,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -58,7 +57,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),//Это колонка текущей сущности, т.е. User.
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     //Это колонка второй (обратной) сущности, с которой связан User, т.е. Role.
-    private List<Role> roles = new ArrayList<>();
+    private Collection<Role> roles;
 
     public User() {
     }
@@ -118,10 +117,11 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public List<Role> getRoles() {
+    public Collection<Role> getRoles() {
         return roles;
     }
-    public void setRoles(List<Role> roles) {
+
+    public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
 
