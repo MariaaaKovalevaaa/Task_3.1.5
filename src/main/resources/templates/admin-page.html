@@ -29,7 +29,7 @@
 <!----------------------------------- Шапка------------------------------------------------------------------------->
 <header>
     <nav class="navbar navbar-dark bg-dark">
-    <span class="navbar-brand" id="navbarBrand">
+    <span class="navbar-brand" id="navbarBrandAdmin">
         <!--********** СКРИПТ **********-->
     </span>
         <form th:action="@{/logout}" th:method="POST">
@@ -201,7 +201,7 @@
                                     <th scope="col">Role</th>
                                 </tr>
                                 </thead>
-                                <tbody id="tableUser">
+                                <tbody id="tableAdmin">
                                 <!-- СКРИПТ -->
                                 </tbody>
                             </table>
@@ -342,8 +342,7 @@
                                 <input class="form-control"
                                        readonly
                                        type="text"
-                                       id="delete-id"
-                                       disabled/>
+                                       id="delete-id">
                             </div>
 
                             <div class="mb-3">
@@ -405,11 +404,9 @@
                                 <label for="delete-roles" ><b>Role</b></label>
                                 <select multiple class="form-control col-12"
                                         size="2"
-                                        id="delete-roles"
-                                        disabled>
-                                    <!--Скрипт-->
-                                    <!--<option value="USER">USER</option>-->
-                                    <!--<option value="ADMIN">ADMIN</option>-->
+                                        id="delete-roles">
+                                    <option value="USER">USER</option>
+                                    <option value="ADMIN">ADMIN</option>
                                 </select>
                             </div>
 
@@ -419,7 +416,7 @@
                                     Close
                                 </button>
 
-                                <button type="submit" class="btn btn-danger">
+                                <button type="submit" class="btn btn-danger" onclick="deleteUser()">
                                     Delete
                                 </button>
                             </div>
@@ -433,11 +430,10 @@
 
 
 <!--Подключаем JavaScript-файл, который сами создали-->
-<script type="text/javascript" src="/js/currentUser.js"></script>
+<script type="text/javascript" src="/js/current-admin.js"></script>
 <script type="text/javascript" src="/js/delete-modal.js"></script>
 <script type="text/javascript" src="/js/edit-modal.js"></script>
 <script type="text/javascript" src="/js/formNew.js"></script>
-<script type="text/javascript" src="/js/navbar.js"></script>
 <script type="text/javascript" src="/js/tableUsers.js"></script>
 
 <!-- Подключаем jQuery library -->

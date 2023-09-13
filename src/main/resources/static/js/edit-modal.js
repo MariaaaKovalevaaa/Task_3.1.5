@@ -1,4 +1,4 @@
-// const URLEdit = 'http://localhost:8080/api/admin/users/';
+const URLEdit = 'http://localhost:8080/api/admin/users/';
 const URLRolesForEdit = 'http://localhost:8080/api/admin/roles';
 
 const formEdit = document.getElementById('formEdit'); //Положили в переменную форму для редактирования. У формы есть кнопка, тип которой submit
@@ -15,7 +15,7 @@ async function getUserById(id) {
 }
 
 //----САМА ФУНКЦИЯ РЕДАКТИРОВАНИЯ ЮЗЕРА. СРАБОТАЕТ, КОГДА НАЖМУТ НА КНОПКУ Edit (при каждом юзере в таблице), Т.К. НА НЕЕ ПОВЕШЕНО СОБЫТИЕ--------
-async function editUser(id) {
+async function getEditModal(id) {
 
     const user = await getUserById(id); //нашли редактируемого юзера по id
 

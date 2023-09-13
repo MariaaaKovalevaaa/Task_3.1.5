@@ -27,7 +27,7 @@ function getAllUsers() {
                          <!--На кнопку Edit повесили событие editUser(id) -->
                         <td>
                             <button type="button" class="btn btn-info" id="${'#editModal' + user.id}"
-                            onclick="getEditModal(' + user.id + ')">
+                            onclick="getEditModal(${user.id})">
                                 Edit
                             </button>
                         </td>
@@ -35,7 +35,7 @@ function getAllUsers() {
                         <!--На кнопку Delete повесили событие deleteUser(id) -->
                         <td>
                             <button type="button" class="btn btn-danger" id="${'#deleteModal' + user.id}"
-                            onclick="deleteUser(${user.id})">
+                            onclick="getDeleteModal(${user.id})">
                                 Delete
                             </button>
                         </td>

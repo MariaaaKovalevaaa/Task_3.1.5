@@ -25,7 +25,7 @@
 <!--СОЗДАЕМ ШАПКУ-->
 <header>
     <nav class="navbar navbar-dark bg-dark">
-    <span class="navbar-brand" id="navbarBrand">
+    <span class="navbar-brand" id="navbarBrandUser">
         <!--********** СКРИПТ **********-->
     </span>
         <form th:action="@{/logout}" th:method="POST">
@@ -73,8 +73,7 @@
 </div>
 
 <!--Подключаем JavaScript-файл, который сами создали-->
-<script type="text/javascript" src="/js/currentUser.js"></script>
-<script type="text/javascript" src="/js/navbar.js"></script>
+<script type="text/javascript" src="/js/current-user.js"></script>
 
 <!-- Подключаем jQuery library -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

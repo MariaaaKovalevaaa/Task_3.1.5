@@ -1,4 +1,4 @@
-const URLDelete = 'http://localhost:8080/api/admin/users/';
+const URLDelete = 'http://localhost:8080/api/admin/users';
 const URLRolesForDelete = 'http://localhost:8080/api/admin/roles';
 
 const formDelete = document.getElementById('formDelete');//Положили в переменную форму для удаления. У формы есть кнопка, тип которой submit
@@ -14,9 +14,8 @@ async function getUserById(id) {
     }
 }
 
-
 //---САМА ФУНКЦИЯ УДАЛЕНИЯ ЮЗЕРА. СРАБОТАЕТ, КОГДА НАЖМУТ НА КНОПКУ Delete (при каждом юзере в таблице), Т.К. НА НЕЙ ПОВЕШЕНО СОБЫТИЕ--------
-async function deleteUser(id) {
+async function getDeleteModal(id) {
 
     const user = await getUserById(id);
 
@@ -77,3 +76,64 @@ formDelete.addEventListener('submit', async (event) => {
             alert(error); //вызов ошибок, если они будут
         })
 })
+
+
+
+
+// function getDeleteModal(id) {
+//     fetch(URL + '/' + id, {
+//         headers: {
+//             'Accept': 'application/json',
+//             'Content-Type': 'application/json;charset=UTF-8'
+//         }
+//     }).then(res => {
+//         res.json().then(userDelete => {
+//             document.getElementById('delete-id').value = userDelete.id;
+//             document.getElementById('delete-username').value = userDelete.username;
+//             document.getElementById('delete-lastname').value = userDelete.lastname;
+//             document.getElementById('delete-age').value = userDelete.age;
+//             document.getElementById('delete-email').value = userDelete.email;
+//             document.getElementById('delete-password').value = userDelete.password;
+//             document.getElementById('delete-roles').value = userDelete.roles;
+//         })
+//     });
+// }
+//
+// function deleteUser() {
+//     event.preventDefault();
+//     let id = document.getElementById('delete-id').value;
+//
+//     fetch(URL + '/' + id, {
+//         method: 'DELETE',
+//         headers: {
+//             'Content-Type': 'application/json;charset=UTF-8'
+//         },
+//
+//     })
+//         .then(() => {
+//             $('#deleteModal').modal('hide');
+//             getAllUsers();
+//         })
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
