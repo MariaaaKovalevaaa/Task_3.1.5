@@ -4,9 +4,8 @@ const formEdit = document.getElementById('formEdit'); //Положили в пе
 const formDelete = document.getElementById('formDelete');//Положили в переменную форму для удаления. У формы есть кнопка, тип которой submit
 const formNew = document.getElementById('formNew');//Положили в переменную форму для добавления нового юзера. У формы есть кнопка, тип которой submit
 
-const tableUsers = document.getElementById('tableUsers'); //Элемент, где будет таблица всех юзеров
 const tableUser = document.getElementById('tableUser');//Элемент, где будет таблица текущего юзера
-
+const tableUsers = document.getElementById('tableUsers');
 const navbarBrand = document.getElementById('navbarBrand');//Элемент, где будет роль и почта текущего юзера
 
 
@@ -15,7 +14,8 @@ async function getAllUsers() {
     const response = await fetch(adminURL + 'users');
     if (response.ok) {
         const users = await response.json();
-        insertDataForTableUsers(users); //получаем юзеров в виде таблицы
+        insertDataForTableUsers(users);
+
     } else {
         alert('Ошибка при получении списка всех пользователей: ' + response.status);
     }
@@ -39,7 +39,7 @@ async function getCurrentUser() {
 getCurrentUser()
 
 
-// <---------------ФУНКЦИЯ ПОЛУЧЕНИЯ ДАННЫХ ДЛЯ ТАБЛИЦЫ ЮЗЕРОВ И ВСТАВКИ ИХ В ТАБЛИЦУ-------------------->
+
 function insertDataForTableUsers(users) {
 
     let dataOfUsers = '';
@@ -49,22 +49,15 @@ function insertDataForTableUsers(users) {
 
         roles = rolesToString(user.role);
 
-        // dataOfUsers += `<tr>
-        //                 <td>${user.id}</td>
-        //                 <td>${user.username}</td>
-        //                 <td>${user.lastname}</td>
-        //                 <td>${user.age}</td>
-        //                 <td>${user.email}</td>
-        //                 <td>${roles}</td>
-
         dataOfUsers += `<tr>
-                    <td>${user.id}</td>
-                    <td>${user.username}</td>
-                    <td>${user.lastname}</td>
-                    <td>${user.age}</td>
-                    <td>${user.email}</td>
-                    <td>${user.role.map(role => " " + role.role.substring(5))}</td> <!--роль отображается с 5 ячейки -->
-                    
+                        <td>${user.id}</td>
+                        <td>${user.username}</td>
+                        <td>${user.lastname}</td>
+                        <td>${user.age}</td>
+                        <td>${user.email}</td>
+                        <td>${roles}</td> 
+
+
 
                          <!--На кнопку Edit повесили событие editUser(id) -->
                         <td>
@@ -73,7 +66,7 @@ function insertDataForTableUsers(users) {
                                 Edit
                             </button>
                         </td>
-                      
+
                         <!--На кнопку Delete повесили событие deleteUser(id) -->
                         <td>
                             <button type="button" class="btn btn-danger" id="${'#deleteModal' + user.id}"
@@ -90,7 +83,7 @@ function insertDataForTableUsers(users) {
 // <---------------ФУНКЦИЯ ПОЛУЧЕНИЯ ДАННЫХ ДЛЯ ТАБЛИЦЫ ТЕКУЩЕГО ЮЗЕРА И ВСТАВКИ ИХ В ТАБЛИЦУ -------------------->
 function insertDataCurrentUser(user) {
 
-    let rolesString = rolesToString(user.roles);
+    let rolesString = rolesToString(user.role);
 
     tableUser.innerHTML = `<tr>
                                 <td>${user.id}</td>
@@ -104,7 +97,7 @@ function insertDataCurrentUser(user) {
 
 // <---------------ФУНКЦИЯ ПОЛУЧЕНИЯ ДАННЫХ ДЛЯ НАВБАРА ТЕКУЩЕГО ЮЗЕРА И ВСТАВКИ ИХ В НАВБАР -------------------->
 function insertDataForNavbarBrand(user) {
-    let rolesString = rolesToString(user.roles);
+    let rolesString = rolesToString(user.role);
     navbarBrand.innerHTML = `<b><span>${user.username}</span></b>
                             <span>with roles:</span>
                             <span>${rolesString}</span>`;
@@ -312,4 +305,5 @@ function rolesToString(roles) {
     rolesString = rolesString.substring(0, rolesString.length - 2);
     return rolesString;
 }
+
 
