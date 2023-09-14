@@ -82,7 +82,7 @@
                             </button>
                             <button class="nav-link" id="nav-new_user-tab" data-bs-toggle="tab"
                                     data-bs-target="#nav-new_user" type="button" role="tab" aria-controls="nav-new_user"
-                                    aria-selected="false">New User
+                                    aria-selected="false" onclick = "addNewUser()">New User
                             </button>
                         </div>
                     </nav>
@@ -167,13 +167,12 @@
                                     <span><b>Role</b></span>
                                     <select class="form-select"
                                             aria-label="Default select example"
-                                            id="create-role" required>
-                                        <!--Скрипт--->
-                                        <!--                                        <option value="ROLE_ADMIN">ADMIN</option>-->
-                                        <!--                                        <option selected value="ROLE_USER">USER</option>-->
+                                            id="create-roles" required>
+                                        <option value="ROLE_ADMIN">ADMIN</option>
+                                        <option selected value="ROLE_USER">USER</option>
                                     </select>
                                     <br>
-                                    <button type="submit" class="btn btn-success">
+                                    <button type="submit" class="btn btn-success" onclick="addNewUser()">
                                         Add new user
                                     </button>
                                 </form>
@@ -238,59 +237,52 @@
                                 <input class="form-control"
                                        type="text"
                                        id="edit-id"
-                                       disabled/>
+                                       readonly/>
                             </div>
 
                             <div class="mb-3">
                                 <label for="edit-username"><b>First Name</b></label>
                                 <input class="form-control"
                                        type="text"
-                                       id="edit-username"
-                                       required/>
+                                       id="edit-username"/>
                             </div>
 
                             <div class="mb-3">
                                 <label for="edit-lastname"><b>Last Name</b></label>
                                 <input class="form-control"
                                        type="text"
-                                       id="edit-lastname"
-                                       name="lastname"
-                                       required/>
+                                       id="edit-lastname"/>
                             </div>
 
                             <div class="mb-3">
                                 <label for="edit-age"><b>Age</b></label>
                                 <input class="form-control"
                                        type="number"
-                                       id="edit-age"
-                                       required/>
+                                       id="edit-age"/>
                             </div>
 
                             <div class="mb-3">
                                 <label for="edit-email"><b>Email</b></label>
                                 <input class="form-control"
                                        type="email"
-                                       id="edit-email"
-                                       required/>
+                                       id="edit-email"/>
                             </div>
 
                             <div class="mb-3">
                                 <label for="edit-password"><b>Password</b></label>
                                 <input class="form-control"
                                        type="text"
-                                       id="edit-password"
-                                       required/>
+                                       id="edit-password"/>
                             </div>
 
                             <div class="mb-3">
                                 <label for="edit-roles"><b>Role</b></label>
                                 <select multiple class="form-control col-12"
                                         size="2"
-                                        id="edit-roles"
-                                        required>
-<!--                                    Скрипт&#45;&#45;-->
-<!--                                    <option value="ROLE_USER">USER</option>-->
-<!--                                    <option value="ROLE_ADMIN">ADMIN</option>-->
+                                        id="edit-roles">
+                                    <!--                                    Скрипт&#45;&#45;-->
+                                    <!--                                    <option value="ROLE_USER">USER</option>-->
+                                    <!--                                    <option value="ROLE_ADMIN">ADMIN</option>-->
                                 </select>
                             </div>
 
@@ -303,7 +295,9 @@
                                 </button>
 
                                 <button type="submit"
-                                        class="btn btn-primary">
+                                        class="btn btn-primary"
+                                        id="editButton"
+                                        onclick="editUser()">
                                     Edit
                                 </button>
                             </div>
@@ -401,7 +395,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="delete-roles" ><b>Role</b></label>
+                                <label for="delete-roles"><b>Role</b></label>
                                 <select multiple class="form-control col-12"
                                         size="2"
                                         id="delete-roles">

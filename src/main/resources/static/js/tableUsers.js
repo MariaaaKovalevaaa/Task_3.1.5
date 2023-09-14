@@ -1,6 +1,6 @@
 // <!---------------- ФУНКЦИЯ ПОЛУЧЕНИЯ ВСЕХ ЮЗЕРОВ----------------------->
 
-const URLTableUsers = 'http://localhost:8080/api/admin/users';
+const URLTableUsers = 'http://localhost:8080/api/admin/users/';
 function getAllUsers() {
     fetch(URLTableUsers)
         .then(function (response) {
@@ -24,7 +24,7 @@ function getAllUsers() {
                         <td>${user.email}</td>
                         <td>${rolesString}</td> 
 
-                         <!--На кнопку Edit повесили событие editUser(id) -->
+                       
                         <td>
                             <button type="button" class="btn btn-info" id="${'#editModal' + user.id}"
                             onclick="getEditModal(${user.id})">
@@ -32,7 +32,7 @@ function getAllUsers() {
                             </button>
                         </td>
 
-                        <!--На кнопку Delete повесили событие deleteUser(id) -->
+                        
                         <td>
                             <button type="button" class="btn btn-danger" id="${'#deleteModal' + user.id}"
                             onclick="getDeleteModal(${user.id})">

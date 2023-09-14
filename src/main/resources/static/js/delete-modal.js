@@ -1,7 +1,7 @@
-const URLDelete = 'http://localhost:8080/api/admin/users';
-const URLRolesForDelete = 'http://localhost:8080/api/admin/roles';
+const URLDelete = 'http://localhost:8080/api/admin/users/';
+const URLRolesForDelete = 'http://localhost:8080/api/admin/roles/';
 
-const formDelete = document.getElementById('formDelete');//Положили в переменную форму для удаления. У формы есть кнопка, тип которой submit
+// const formDelete = document.getElementById('formDelete');
 
 
 //ФУНКЦИЯ НАЙТИ ЮЗЕРА ПО id. НУЖНА Д/РЕДАКТИРОВАНИЯ И УДАЛЕНИЯ
@@ -14,17 +14,16 @@ async function getUserById(id) {
     }
 }
 
-//---САМА ФУНКЦИЯ УДАЛЕНИЯ ЮЗЕРА. СРАБОТАЕТ, КОГДА НАЖМУТ НА КНОПКУ Delete (при каждом юзере в таблице), Т.К. НА НЕЙ ПОВЕШЕНО СОБЫТИЕ--------
 async function getDeleteModal(id) {
 
-    const user = await getUserById(id);
+    const userDelete = await getUserById(id);
 
-    document.getElementById('delete-id').value = user.id;
-    document.getElementById('delete-username').value = user.username;
-    document.getElementById('delete-lastname').value = user.lastname;
-    document.getElementById('delete-age').value = user.age;
-    document.getElementById('delete-email').value = user.email;
-    document.getElementById('delete-password').value = user.password;
+    document.getElementById('delete-id').value = userDelete.id;
+    document.getElementById('delete-username').value = userDelete.username;
+    document.getElementById('delete-lastname').value = userDelete.lastname;
+    document.getElementById('delete-age').value = userDelete.age;
+    document.getElementById('delete-email').value = userDelete.email;
+    document.getElementById('delete-password').value = userDelete.password;
 
     const response = await fetch(URLRolesForDelete);
     if (response.ok) {
@@ -37,7 +36,7 @@ async function getDeleteModal(id) {
             let text = role1.name;
             text = text.toString().substring(5, text.length);
             let selected = '';
-            for (const role2 of user.roles) {
+            for (const role2 of userDelete.roles) {
                 if (role1.name === role2.name) {
                     selected = 'selected';
                     break;
@@ -56,26 +55,25 @@ async function getDeleteModal(id) {
 // <!----ФУНКЦИЯ, ОТПРАВЛЯЮЩАЯ НА СЕРВЕР DELETE-ЗАПРОС ПРИ НАЖАТИИИ НА КНОПКУ DELETE В МОДАЛЬНОМ ОКНЕ Д/УДАЛЕНИЯ --->
 // Повесили событие на форму для удаления юзера
 //назначаем функцию обработчика событий, которая будет вызываться при событии 'submit'
-formDelete.addEventListener('submit', async (event) => {
+async function deleteUser() {
     event.preventDefault();//Предотвращаем действие браузера по умолчанию, т.е. - перезагрузку
 
-    let id = document.getElementById('delete-id').value; //Получили значения id из инпута
+    let id = await document.getElementById('delete-id').value; //Получили значения id из инпута
 
-    await fetch(URLDelete + id, {
+    fetch(URLDelete + id, {
         method: 'DELETE', headers: {
             'Content-Type': 'application/json; charset=utf-8'
         }
     })
         .then(() => {
-            formDelete.reset();//очищаем поля формы
-            $('#deleteClose').click(); //обратились к кнопке-закрывашке модалки д/удаления и говорим, что нужно кликнуть по ней
+            // formDelete.reset();//очищаем поля формы
+            $('#editModal').modal('hide');
             getAllUsers();
-            $('#nav-home-tab').click();
         })
         .catch((error) => {
-            alert(error); //вызов ошибок, если они будут
-        })
-})
+            alert(error);
+        });
+}
 
 
 
