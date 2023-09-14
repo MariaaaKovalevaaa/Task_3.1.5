@@ -1,7 +1,7 @@
 const URLDelete = 'http://localhost:8080/api/admin/users/';
 const URLRolesForDelete = 'http://localhost:8080/api/admin/roles/';
 
-// const formDelete = document.getElementById('formDelete');
+const formDelete = document.getElementById('formDelete');
 
 
 //ФУНКЦИЯ НАЙТИ ЮЗЕРА ПО id. НУЖНА Д/РЕДАКТИРОВАНИЯ И УДАЛЕНИЯ
@@ -55,26 +55,24 @@ async function getDeleteModal(id) {
 // <!----ФУНКЦИЯ, ОТПРАВЛЯЮЩАЯ НА СЕРВЕР DELETE-ЗАПРОС ПРИ НАЖАТИИИ НА КНОПКУ DELETE В МОДАЛЬНОМ ОКНЕ Д/УДАЛЕНИЯ --->
 // Повесили событие на форму для удаления юзера
 //назначаем функцию обработчика событий, которая будет вызываться при событии 'submit'
-async function deleteUser() {
+formDelete.addEventListener('submit', async (event) => {
     event.preventDefault();//Предотвращаем действие браузера по умолчанию, т.е. - перезагрузку
 
     let id = await document.getElementById('delete-id').value; //Получили значения id из инпута
 
-    fetch(URLDelete + id, {
+    await fetch(URLDelete + id, {
         method: 'DELETE', headers: {
             'Content-Type': 'application/json; charset=utf-8'
         }
     })
         .then(() => {
-            // formDelete.reset();//очищаем поля формы
-            $('#editModal').modal('hide');
+            $('#deleteModal').modal('hide');
             getAllUsers();
         })
         .catch((error) => {
             alert(error);
-        });
-}
-
+        })
+})
 
 
 

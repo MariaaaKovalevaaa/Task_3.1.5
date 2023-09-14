@@ -54,8 +54,8 @@ async function getEditModal(id) {
     }
 }
 
-function editUser() {
-    event.preventDefault(); //Предотвращаем действие браузера по умолчанию, т.е. - перезагрузку
+formEdit.addEventListener('submit', async (event) => {
+    event.preventDefault();//Предотвращаем действие браузера по умолчанию, т.е. - перезагрузку
 
     //Получаем значения, введенные в инпуты
     let id = document.getElementById('edit-id').value;
@@ -70,7 +70,7 @@ function editUser() {
         .filter(option => option.selected) //отфильтровать выбранный
         .map(option => ({id: option.value, name: `ROLE_${option.text}`}));
 
-    fetch(URLEdit, {
+    await fetch(URLEdit + id, {
         method: 'PUT', headers: {
             'Content-Type': 'application/json; charset=utf-8'
         }, body: JSON.stringify({
@@ -83,5 +83,5 @@ function editUser() {
         })
         .catch((error) => {
             alert(error);
-        });
-}
+        })
+})

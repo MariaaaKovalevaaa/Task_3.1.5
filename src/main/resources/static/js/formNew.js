@@ -2,37 +2,42 @@ const URLFormNew = 'http://localhost:8080/api/admin/users/';
 
 const formNew = document.getElementById('formNew');//Положили в переменную форму для добавления нового юзера. У формы есть кнопка, тип которой submit
 
-function addNewUser() {
+formNew.addEventListener('submit', async (event) => {
     event.preventDefault();
-    let firstName = document.getElementById('create-username').value;
+
+    let username = document.getElementById('create-username').value;
     let lastname = document.getElementById('create-lastname').value;
     let age = document.getElementById('create-age').value;
     let email = document.getElementById('create-email').value;
     let password = document.getElementById('create-password').value;
-    let roles = document.getElementById('create-roles').value;
 
+    let roles = Array
+        .from(document.getElementById('create-roles').options)
+        .filter(option => option.selected)
+        .map(option => `ROLE_${option.text}`);
 
-    fetch(URL, {
+    await fetch(URLFormNew, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=UTF-8'
         },
         body: JSON.stringify({
-            'firstName': firstName,
-            'lastName': lastname,
+            'username': username,
+            'lastname': lastname,
             'age': age,
-            'username': email,
+            'email': email,
             'password': password,
             'roles': roles
         })
     })
         .then(() => {
-            // document.getElementById('nav-users_table-tab').click()
-            getAllUsers()
-            formNew.reset()
+            formNew.reset();
+            getAllUsers();
         })
-
-}
+        .catch((error) => {
+            alert(error);
+        })
+})
 
 
 
