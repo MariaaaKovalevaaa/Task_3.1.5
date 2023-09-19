@@ -1,96 +1,46 @@
-const URLFormNew = 'http://localhost:8080/api/admin/users/';
+//'use strict'; включает строгий режим выполнения JavaScript. Эта строка должна располагаться в самом начале скрипта,
+// иначе строгий режим не будет работать. В строгом режиме интерпретатор будет явно выбрасывать
+// ошибки на действия, которые ранее пропускал.
 
-const formNew = document.getElementById('formNew');//Положили в переменную форму для добавления нового юзера. У формы есть кнопка, тип которой submit
+'use strict';
 
-formNew.addEventListener('submit', async (event) => {
-    event.preventDefault();
+let formNew = document.forms["formNew"];
 
-    let username = document.getElementById('create-username').value;
-    let lastname = document.getElementById('create-lastname').value;
-    let age = document.getElementById('create-age').value;
-    let email = document.getElementById('create-email').value;
-    let password = document.getElementById('create-password').value;
+createNewUser()
 
-    let roles = Array
-        .from(document.getElementById('create-roles').options)
-        .filter(option => option.selected)
-        .map(option => `ROLE_${option.text}`);
+function createNewUser() {
+    formNew.addEventListener("submit", ev => {
+        ev.preventDefault();
 
-    await fetch(URLFormNew, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=UTF-8'
-        },
-        body: JSON.stringify({
-            'username': username,
-            'lastname': lastname,
-            'age': age,
-            'email': email,
-            'password': password,
-            'roles': roles
-        })
-    })
-        .then(() => {
+        let roles = [];
+        for (let i = 0; i < formNew.roles.options.length; i++) {
+            if (formNew.roles.options[i].selected)
+                roles.push ({
+                id: formNew.roles.options[i].value,
+                role: "ROLE_" + formNew.roles.options[i].text
+            });
+        }
+
+        fetch('http://localhost:8080/api/admin/users/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: formNew.username.value,
+                lastname: formNew.lastname.value,
+                age: formNew.age.value,
+                email: formNew.email.value,
+                password: formNew.password.value,
+                roles: roles
+            })
+        }).then(() => {
             formNew.reset();
+            $('#usersTable').click(); //клик по кнопке Users Table
             getAllUsers();
-        })
-        .catch((error) => {
-            alert(error);
-        })
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// <!-----ФУНКЦИЯ, ОТПРАВЛЯЮЩАЯ НА СЕРВЕР POST-ЗАПРОСОМ ДАННЫЕ НОВЫОГО ЮЗЕРА ПРИ НАЖАТИИИ НА КНОПКУ Add new user В ФОРМЕ Д/ДОБАВЛЕНИЯ --->
-// // Повесили событие на форму для добавления юзера
-// //назначаем функцию обработчика событий, которая будет вызываться при событии 'submit' (на кнопке Add new user)
-//
-// formNew.addEventListener('submit', async (event) => {
-//     event.preventDefault(); //Предотвращаем действие браузера по умолчанию, т.е. - перезагрузку
-//
-//     //Получаем значения, введенные в инпуты
-//     let username = document.getElementById('create-username').value;
-//     let lastname = document.getElementById('create-lastname').value;
-//     let age = document.getElementById('create-age').value;
-//     let email = document.getElementById('create-email').value;
-//     let password = document.getElementById('create-password').value;
-//
-//     let roles = Array
-//         .from(document.getElementById('create-role').options)
-//         .filter(option => option.selected)
-//         .map(option => `ROLE_${option.text}`);
-//
-//     await fetch(URLFormNew, {
-//         method: 'POST', headers: {
-//             'Content-Type': 'application/json; charset=utf-8'
-//         }, body: JSON.stringify({
-//             username: username, lastname: lastname, age: age, email: email, password: password, roles: roles
-//         })
-//     })
-//         .then(() => {
-//             formNew.reset();  //очищаем поля формы
-//             getAllUsers();
-//             // $('#nav-home-tab').click();
-//         })
-//         .catch((error) => {
-//             alert(error);
-//         })
-// })
+        });
+    });
+}
 
 
 

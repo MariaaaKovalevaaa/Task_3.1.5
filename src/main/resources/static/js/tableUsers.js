@@ -1,6 +1,10 @@
 // <!---------------- ФУНКЦИЯ ПОЛУЧЕНИЯ ВСЕХ ЮЗЕРОВ----------------------->
 
+"use strict";
+
 const URLTableUsers = 'http://localhost:8080/api/admin/users/';
+
+getAllUsers();
 function getAllUsers() {
     fetch(URLTableUsers)
         .then(function (response) {
@@ -26,16 +30,14 @@ function getAllUsers() {
 
                        
                         <td>
-                            <button type="button" class="btn btn-info" id="${'#editModal' + user.id}"
-                            onclick="getEditModal(${user.id})">
+                            <button type="button" class="btn btn-info" data-target="#editModal" onclick="editModal(${user.id})">
                                 Edit
                             </button>
                         </td>
 
                         
                         <td>
-                            <button type="button" class="btn btn-danger" id="${'#deleteModal' + user.id}"
-                            onclick="getDeleteModal(${user.id})">
+                            <button type="button" class="btn btn-danger" data-target="#deleteModal" onclick="deleteModal(${user.id})">
                                 Delete
                             </button>
                         </td>
@@ -44,8 +46,6 @@ function getAllUsers() {
             tableUsers.innerHTML = dataOfUsers;
         })
 }
-
-getAllUsers()
 
 function rolesToString(roles) {
     let rolesString = '';

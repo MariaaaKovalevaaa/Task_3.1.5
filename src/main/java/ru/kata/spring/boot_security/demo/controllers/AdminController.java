@@ -33,7 +33,7 @@ import java.util.List;
  * Т.е. в качестве клиента будет не браузер, а Postman.
  */
 
-@CrossOrigin //позволяет выполнять запросы между разными источниками
+
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
@@ -74,7 +74,7 @@ public class AdminController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> addNewUser(@RequestBody @Valid User newUser, @RequestParam("roles") String[] roles, BindingResult bindingResult) {
+    public ResponseEntity<User> addNewUser(@RequestBody @Valid User newUser, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             StringBuilder info_about_errors = new StringBuilder(); //Создали строку, в которую поместим ошибки
@@ -89,14 +89,12 @@ public class AdminController {
 
             throw new UserNotCreatedException(info_about_errors.toString());
         }
-//        User user = convertToUser(userDTO);
-        newUser.setRoles(roleService.createCollectionRoles(roles));
         userService.saveUser(newUser);
         return new ResponseEntity<>(newUser, HttpStatus.OK);
 
     }
 
-    @PutMapping("/users/{id}")
+    @PatchMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User userFromWebPage, @PathVariable("id") Long id) {
         userService.updateUser(userFromWebPage, id);
         return new ResponseEntity<>(userFromWebPage, HttpStatus.OK);

@@ -61,10 +61,8 @@ public class UserServiceImpl implements UserService {
             user_from_DB.setPassword(passwordEncoder.encode(updateUser.getPassword()));
             userRepository.save(user_from_DB);
         }
-
         userRepository.save(user_from_DB);
     }
-
 
     @Transactional
     @Override
