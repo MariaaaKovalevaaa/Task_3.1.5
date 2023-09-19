@@ -24,7 +24,7 @@ function deleteUser() {
                 'Content-Type': 'application/json'
             }
         }).then(() => {
-            $('#closeDelete').click();
+            $('#deleteClose').click();
             getAllUsers();
         });
     });

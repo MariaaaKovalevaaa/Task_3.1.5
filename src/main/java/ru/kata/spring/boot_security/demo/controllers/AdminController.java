@@ -96,7 +96,7 @@ public class AdminController {
 
     @PatchMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User userFromWebPage, @PathVariable("id") Long id) {
-        userService.updateUser(userFromWebPage, id);
+        userService.update(userFromWebPage);
         return new ResponseEntity<>(userFromWebPage, HttpStatus.OK);
     }
 
@@ -109,29 +109,6 @@ public class AdminController {
         userService.deleteUserById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
-//    /**
-//     * Метод конвертации UserDTO (то, что пришло от клиента) в User
-//     * ModelMapper используется, чтобы конвертировать UserDTO в User и наоборот.
-//     * В нем задаем исходный объект и целевой класс, т.е. тот класс,
-//     * в объект которого нужно конвертировать то, что пришло от клиента
-//     * ModelMapper найдет все поля в userDTO, которые совпадают по названию в User,
-//     * и положит все поля в User из userDTO
-//     */
-//    public User convertToUser(UserDTO userDTO) {
-//        return modelMapper.map(userDTO, User.class);
-//    }
-//
-//    /**
-//     * Метод конвертации User в UserDTO
-//     * Нужно для отправки ответа клиенту.
-//     * Клиенту не нужно видеть всех полей User
-//     */
-//
-//    public UserDTO convertToUserDTO(User user) {
-//        return modelMapper.map(user, UserDTO.class);
-//    }
 }
 
 
