@@ -11,13 +11,15 @@ function editUser() {
     formEdit.addEventListener("submit", ev => {
         ev.preventDefault();
 
-        let roles = [];
+        let rolesForEdit = [];
         for (let i = 0; i < formEdit.roles.options.length; i++) {
-            if (formEdit.roles.options[i].selected) roles.push({
+            if (formEdit.roles.options[i].selected) rolesForEdit.push({
                 id: formEdit.roles.options[i].value,
                 role: "ROLE_" + formEdit.roles.options[i].text
             });
         }
+
+        // let user = getUserById(formEdit.id.value);
 
         fetch("http://localhost:8080/api/admin/users/" + formEdit.id.value, {
             method: 'PATCH',
@@ -31,7 +33,7 @@ function editUser() {
                 age: formEdit.age.value,
                 email: formEdit.email.value,
                 password: formEdit.password.value,
-                roles: roles
+                roles: rolesForEdit
             })
         }).then(() => {
             $('#editClose').click();
@@ -40,7 +42,7 @@ function editUser() {
     });
 }
 
-
+//Приведение ролей к виду JS
 function loadRolesForEdit() {
     let selectEdit = document.getElementById("edit-roles");
     selectEdit.innerHTML = "";
@@ -51,10 +53,11 @@ function loadRolesForEdit() {
             data.forEach(role => {
                 let option = document.createElement("option");
                 option.value = role.id;
-                option.text = role.role === "ROLE_USER" ? "USER" : role.role === "ROLE_ADMIN" ? "ADMIN" : role.name;
+                option.text = role.name.toString().replace('ROLE_', '');
                 selectEdit.appendChild(option);
             });
         })
         .catch(error => console.error(error));
 }
 window.addEventListener("load", loadRolesForEdit);
+

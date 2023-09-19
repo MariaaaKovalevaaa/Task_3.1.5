@@ -27,7 +27,11 @@ function getAllUsers() {
 
                        
                         <td>
-                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#editModal" onclick="editModal(${user.id})">
+                          <button type="button" 
+                          class="btn btn-info" 
+                          data-bs-toogle="modal"
+                          data-bs-target="#editModal"
+                          onclick="editModal(${user.id})">
                                 Edit
                             </button>
                         </td>
@@ -49,6 +53,6 @@ function rolesToString(roles) {
     for (const element of roles) {
         rolesString += (element.name.toString().replace('ROLE_', '') + ', ');
     }
-    rolesString = rolesString.substring(0, rolesString.length - 2);
+    rolesString = rolesString.substring(0, rolesString.length - 2); // -2, чтобы не показывать последнюю запятую с пробелом
     return rolesString;
 }

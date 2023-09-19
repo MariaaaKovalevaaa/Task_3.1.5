@@ -14,7 +14,6 @@ async function deleteModal(id) {
             formDelete.roles.value = 'USER';
             break;
     }
-    // deleteUser()
 }
 
 function deleteUser() {
@@ -32,6 +31,7 @@ function deleteUser() {
     });
 }
 
+//Приведение ролей к виду JS
 function loadRolesForDelete() {
     let selectDelete = document.getElementById("delete-roles");
     selectDelete.innerHTML = "";
@@ -42,7 +42,7 @@ function loadRolesForDelete() {
             data.forEach(role => {
                 let option = document.createElement("option");
                 option.value = role.id;
-                option.text = role.role === "ROLE_USER" ? "USER" : role.role === "ROLE_ADMIN" ? "ADMIN" : role.name;
+                option.text = role.name.toString().replace('ROLE_', '');
                 selectDelete.appendChild(option);
             });
         })
@@ -50,11 +50,6 @@ function loadRolesForDelete() {
 }
 
 window.addEventListener("load", loadRolesForDelete);
-
-
-
-
-
 
 
 
