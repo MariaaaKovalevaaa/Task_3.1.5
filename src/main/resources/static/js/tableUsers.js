@@ -27,14 +27,14 @@ function getAllUsers() {
 
                        
                         <td>
-                            <button type="button" class="btn btn-info" data-target="#editModal" onclick="editModal(${user.id})">
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#editModal" onclick="editModal(${user.id})">
                                 Edit
                             </button>
                         </td>
 
                         
                         <td>
-                            <button type="button" class="btn btn-danger" data-target="#deleteModal" onclick="deleteModal(${user.id})">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" onclick="deleteModal(${user.id})">
                                 Delete
                             </button>
                         </td>
