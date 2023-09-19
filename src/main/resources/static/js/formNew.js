@@ -1,9 +1,3 @@
-//'use strict'; включает строгий режим выполнения JavaScript. Эта строка должна располагаться в самом начале скрипта,
-// иначе строгий режим не будет работать. В строгом режиме интерпретатор будет явно выбрасывать
-// ошибки на действия, которые ранее пропускал.
-
-'use strict';
-
 let formNew = document.forms["formNew"];
 
 createNewUser()
@@ -15,10 +9,10 @@ function createNewUser() {
         let roles = [];
         for (let i = 0; i < formNew.roles.options.length; i++) {
             if (formNew.roles.options[i].selected)
-                roles.push ({
-                id: formNew.roles.options[i].value,
-                role: "ROLE_" + formNew.roles.options[i].text
-            });
+                roles.push({
+                    id: formNew.roles.options[i].value,
+                    role: "ROLE_" + formNew.roles.options[i].text
+                });
         }
 
         fetch('http://localhost:8080/api/admin/users/', {

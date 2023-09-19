@@ -1,5 +1,3 @@
-"use strict";
-
 let formEdit = document.forms["formEdit"];
 editUser();
 
@@ -19,11 +17,6 @@ function editUser() {
                 role: "ROLE_" + formEdit.roles.options[i].text
             });
         }
-        // let username = document.getElementById('edit-username').value;
-        // let lastname = document.getElementById('edit-lastname').value;
-        // let age = document.getElementById('edit-age').value;
-        // let email = document.getElementById('edit-email').value;
-        // let password = document.getElementById('edit-password').value;
 
         fetch("http://localhost:8080/api/admin/users/" + formEdit.id.value, {
             method: 'PATCH',

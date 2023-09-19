@@ -1,4 +1,3 @@
-
 async function getUserById(id) {
     let response = await fetch("http://localhost:8080/api/admin/users/" + id);
     return await response.json();

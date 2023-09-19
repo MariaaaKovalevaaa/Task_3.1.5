@@ -1,7 +1,5 @@
-'use strict';
-
 let formDelete = document.forms["formDelete"]
-
+deleteUser();
 async function deleteModal(id) {
     const modalDelete = new bootstrap.Modal(document.querySelector('#deleteModal'));
     await open_fill_modal(formDelete, modalDelete, id);

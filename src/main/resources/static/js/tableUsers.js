@@ -1,10 +1,7 @@
-// <!---------------- ФУНКЦИЯ ПОЛУЧЕНИЯ ВСЕХ ЮЗЕРОВ----------------------->
-
-"use strict";
-
 const URLTableUsers = 'http://localhost:8080/api/admin/users/';
 
 getAllUsers();
+
 function getAllUsers() {
     fetch(URLTableUsers)
         .then(function (response) {

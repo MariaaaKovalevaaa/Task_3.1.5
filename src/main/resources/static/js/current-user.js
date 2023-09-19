@@ -1,6 +1,3 @@
-// <---------------ФУНКЦИЯ ПОЛУЧЕНИЯ ДАННЫХ ТЕКУЩЕГО ЮЗЕРА ДЛЯ НАВБАРА И ДЛЯ ТАБЛИЦЫ ТЕКУЩЕГО ЮЗЕРА -------------------->
-"use strict";
-
 const URLNavbarUser = 'http://localhost:8080/api/user/showAccount/';
 const navbarBrandUser = document.getElementById('navbarBrandUser'); //Элемент, где будет роль и почта текущего юзера
 const tableUserUser = document.getElementById('tableUser');//Элемент, где будет таблица текущего юзера
