@@ -16,7 +16,7 @@ function getCurrentUser() {
             <td>${user.lastname}</td>
             <td>${user.age}</td>
             <td>${user.email}</td>
-            <td>${rolesStringUser}</td> 
+            <td>${rolesStringUser}</td>
             </tr>`;
             tableUserUser.innerHTML = dataOfUser;
             navbarBrandUser.innerHTML = `<b><span>${user.email}</span></b>

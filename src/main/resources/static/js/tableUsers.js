@@ -23,12 +23,12 @@ function getAllUsers() {
                         <td>${user.lastname}</td>
                         <td>${user.age}</td>
                         <td>${user.email}</td>
-                        <td>${rolesString}</td> 
+                        <td>${rolesString}</td>
 
-                       
+
                         <td>
-                          <button type="button" 
-                          class="btn btn-info" 
+                          <button type="button"
+                          class="btn btn-info"
                           data-bs-toogle="modal"
                           data-bs-target="#editModal"
                           onclick="editModal(${user.id})">
@@ -36,9 +36,13 @@ function getAllUsers() {
                             </button>
                         </td>
 
-                        
+
                         <td>
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" onclick="deleteModal(${user.id})">
+                            <button type="button" 
+                            class="btn btn-danger" 
+                            data-toggle="modal" 
+                            data-target="#deleteModal" 
+                            onclick="deleteModal(${user.id})">
                                 Delete
                             </button>
                         </td>

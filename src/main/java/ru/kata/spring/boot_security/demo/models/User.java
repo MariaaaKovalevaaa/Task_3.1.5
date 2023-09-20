@@ -57,7 +57,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),//Это колонка текущей сущности, т.е. User.
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     //Это колонка второй (обратной) сущности, с которой связан User, т.е. Role.
-    private Collection<Role> roles;
+    private Collection <Role> roles;
 
     public User() {
     }
@@ -84,6 +84,7 @@ public class User implements UserDetails {
         this.username = username;
     }
 
+
     public String getLastname() {
         return lastname;
     }
@@ -91,6 +92,7 @@ public class User implements UserDetails {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
+
 
     public Byte getAge() {
         return age;
@@ -100,6 +102,7 @@ public class User implements UserDetails {
         this.age = age;
     }
 
+
     public String getEmail() {
         return email;
     }
@@ -107,6 +110,7 @@ public class User implements UserDetails {
     public void setEmail(String email) {
         this.email = email;
     }
+
 
     @Override
     public String getPassword() {
@@ -116,6 +120,7 @@ public class User implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
+
 
     public Collection<Role> getRoles() {
         return roles;

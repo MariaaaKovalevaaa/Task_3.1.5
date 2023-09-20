@@ -16,7 +16,7 @@ function getCurrentAdmin() {
             <td>${userAdmin.lastname}</td>
             <td>${userAdmin.age}</td>
             <td>${userAdmin.email}</td>
-            <td>${rolesStringAdmin}</td> 
+            <td>${rolesStringAdmin}</td>
             </tr>`;
             tableUserAdmin.innerHTML = data;
             navbarBrandAdmin.innerHTML = `<b><span>${userAdmin.email}</span></b>
