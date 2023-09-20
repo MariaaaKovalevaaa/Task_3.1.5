@@ -33,7 +33,7 @@ import java.util.List;
  * Т.е. в качестве клиента будет не браузер, а Postman.
  */
 
-
+//@Secured("ROLE_ADMIN")
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {

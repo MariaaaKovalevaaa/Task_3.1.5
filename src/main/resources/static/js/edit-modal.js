@@ -18,6 +18,13 @@ function editUser() {
     formEdit.addEventListener("submit", ev => {
         ev.preventDefault();
 
+        // let id = document.getElementById('edit-id').value;
+        // let username = document.getElementById('edit-username').value;
+        // let lastname = document.getElementById('edit-lastname').value;
+        // let age = document.getElementById('edit-age').value;
+        // let email = document.getElementById('edit-email').value;
+        // let password = document.getElementById('edit-password').value;
+
         //Приведение ролей из вида js к виду java
         let rolesForEdit = [];
         for (let i = 0; i < formEdit.roles.options.length; i++) {
@@ -35,6 +42,15 @@ function editUser() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                // id: id,
+                // username: username,
+                // lastname: lastname,
+                // age: age,
+                // email: email,
+                // password: password,
+                // roles: rolesForEdit
+
+
                 id: formEdit.id.value,
                 username: formEdit.username.value,
                 lastname: formEdit.lastname.value,
