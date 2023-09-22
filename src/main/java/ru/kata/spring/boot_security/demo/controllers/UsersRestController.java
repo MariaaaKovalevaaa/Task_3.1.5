@@ -33,25 +33,24 @@ import java.util.List;
  * Т.е. в качестве клиента будет не браузер, а Postman.
  */
 
-//@Secured("ROLE_ADMIN")
 @RestController
 @RequestMapping("/api/admin")
-public class AdminController {
+public class UsersRestController {
 
     private final UserService userService;
     private final RoleService roleService;
 //    private final ModelMapper modelMapper; ///используется, чтобы конвертировать UserDTO в User и наоборот.
 
     @Autowired
-    public AdminController(UserService userService, RoleService roleService) {
+    public UsersRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
 //        this.modelMapper = modelMapper;
     }
 
     @GetMapping("/showAccount")
-    public ResponseEntity<User> showInfoUser (Principal principal) {
-        return ResponseEntity.ok (userService.findByUsername(principal.getName()));
+    public ResponseEntity<User> showInfoUser(Principal principal) {
+        return ResponseEntity.ok(userService.findByUsername(principal.getName()));
     }
 
     @GetMapping("/users")
@@ -115,6 +114,51 @@ public class AdminController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
+
+//ЕСЛИ ДЕЛАТЬ С ПРОСЛОЙКОЙ DTO, ТО МЕТОД ДОБАВЛЕНИЯ ДОЛЖЕН БЫТЬ ТАКИМ:
+
+//    @PostMapping("/users")
+//    public ResponseEntity<User> addNewUser(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
+//
+//        if (bindingResult.hasErrors()) {
+//            StringBuilder info_about_errors = new StringBuilder(); //Создали строку, в которую поместим ошибки
+//            List<FieldError> fields_of_errors = bindingResult.getFieldErrors(); //Получили список из полей, где произошли ошибки
+//            for (FieldError error : fields_of_errors) { //Прошлись по ошибкам
+//                info_about_errors.append(error.getField()) // в строку добавили само поле
+//                        .append(" - ")
+//                        .append(error.getDefaultMessage()) //добавили сообщение ошибки
+//                        .append(";");
+//            }
+//
+//            throw new UserNotCreatedException(info_about_errors.toString());
+//        }
+//        User user = convertToUser(userDTO);
+//        userService.saveUser(user);
+//        return new ResponseEntity<>(user, HttpStatus.OK);
+//    }
+
+//    /**
+//     * Метод конвертации UserDTO (то, что пришло от клиента) в User
+//     * ModelMapper используется, чтобы конвертировать UserDTO в User и наоборот.
+//     * В нем задаем исходный объект и целевой класс, т.е. тот класс,
+//     * в объект которого нужно конвертировать то, что пришло от клиента
+//     * ModelMapper найдет все поля в userDTO, которые совпадают по названию в User,
+//     * и положит все поля в User из userDTO
+//     */
+//    public User convertToUser(UserDTO userDTO) {
+//        return modelMapper.map(userDTO, User.class);
+//    }
+//
+//    /**
+//     * Метод конвертации User в UserDTO
+//     * Нужно для отправки ответа клиенту.
+//     * Клиенту не нужно видеть всех полей User
+//     */
+//
+//    public UserDTO convertToUserDTO(User user) {
+//        return modelMapper.map(user, UserDTO.class);
+//    }
+
 
 
 

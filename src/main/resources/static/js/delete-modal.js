@@ -5,15 +5,6 @@ async function deleteModal(id) {
     const modalDelete = new bootstrap.Modal(document.querySelector('#deleteModal'));
     await open_fill_modal(formDelete, modalDelete, id);
     loadRolesForDelete();
-
-    switch (formDelete.roles.value) {
-        case '1':
-            formDelete.roles.value = 'ADMIN';
-            break;
-        case '2':
-            formDelete.roles.value = 'USER';
-            break;
-    }
 }
 
 function deleteUser() {

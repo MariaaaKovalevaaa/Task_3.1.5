@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 
-//Внутри Authentication authentication содержатся Credentials, т.е. логин и пароль, введенные с формы
+/**
+ * Внутри Authentication authentication содержатся Credentials, т.е. логин и пароль, введенные с формы
+ **/
 
 @Component
 public class SuccessUserHandler implements AuthenticationSuccessHandler {
@@ -20,9 +22,9 @@ public class SuccessUserHandler implements AuthenticationSuccessHandler {
                                         Authentication authentication) throws IOException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());//Получили список ролей юзера
         if (roles.contains("ROLE_ADMIN")) {
-            httpServletResponse.sendRedirect("/api/admin");
+            httpServletResponse.sendRedirect("/admin");
         } else if (roles.contains("ROLE_USER")) {
-            httpServletResponse.sendRedirect("/api/user");
+            httpServletResponse.sendRedirect("/user");
         } else {
             httpServletResponse.sendRedirect("/login");
         }

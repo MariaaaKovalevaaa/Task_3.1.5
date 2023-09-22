@@ -10,14 +10,14 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
 import java.security.Principal;
-//@Secured({"ROLE_ADMIN", "ROLE_USER"})
+
 @RestController
 @RequestMapping("/api/user")
-public class UserController {
+public class CurrentUserRestController {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public CurrentUserRestController(UserService userService) {
         this.userService = userService;
     }
 

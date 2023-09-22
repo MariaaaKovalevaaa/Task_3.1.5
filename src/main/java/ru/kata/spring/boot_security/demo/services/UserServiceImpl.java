@@ -45,14 +45,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).get();
     }
 
-
     @Transactional
     @Override
     public void update(User updatedUser) {
         updatedUser.setPassword(passwordEncoder.encode(findUserById(updatedUser.getId()).getPassword()));
         userRepository.save(updatedUser);
     }
-
 
     @Transactional
     @Override
@@ -71,21 +69,3 @@ public class UserServiceImpl implements UserService {
     }
 }
 
-//    @Override
-//    @Transactional
-//    public void updateUser(User updateUser, Long id) {
-//        User user_from_DB = userRepository.findById(id).get(); //Нашли в БД, кого хотим редактировать
-//        user_from_DB.setUsername(updateUser.getUsername());
-//        user_from_DB.setLastname(updateUser.getLastname());
-//        user_from_DB.setAge(updateUser.getAge());
-//        user_from_DB.setEmail(updateUser.getEmail());
-//        user_from_DB.setRoles(updateUser.getRoles());
-//
-//        if (user_from_DB.getPassword().equals(updateUser.getPassword())) {
-//            userRepository.save(user_from_DB);
-//        } else {
-//            user_from_DB.setPassword(passwordEncoder.encode(updateUser.getPassword()));
-//            userRepository.save(user_from_DB);
-//        }
-//        userRepository.save(user_from_DB);
-//    }
