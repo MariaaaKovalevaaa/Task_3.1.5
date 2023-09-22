@@ -9,8 +9,7 @@
     <!--width=device-width - это, чтобы работали адаптивные версии на всех мобильных устройствах, т.е. ширина по девайсу-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!--  Подключаем стили (CSS) Бутстрапа
-    rel (от relationship) – это атрибут, описывающий тег href-->
+    <!--  Подключаем стили (CSS) Бутстрапа-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
           integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 
@@ -20,7 +19,6 @@
     <title>Admin panel</title>
 
 </head>
-
 <body>
 
 <!----------------------------------- Шапка------------------------------------------------------------------------->
@@ -36,16 +34,12 @@
 </header>
 
 <!------------------------------------------------Навигация слева------------------------------------------------------->
-<!--СОЗДАЕМ ВКЛАДКИ СЛЕВА, у которых ниже раскрывающиеся блоки под id #v-pills-admin" и под id "#v-pills-user" будет панель юзера
-    У вкладки Admin будут еще две вкладки: Users table с id="nav-users_table-tab" и New user id="nav-new_user-tab"-->
-
-<div class="d-flex align-items-start"> <!--align-items-start - это выравнивание по горизонтали. start - это по верху-->
+<div class="d-flex align-items-start">
 
     <div class="col-2">
 
         <!---------------------------- Вертикальная левая панель------------------------------>
         <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-
             <ul class="nav nav-pills nav-fill flex-column">
                 <li class="nav-item">
                     <a class="nav-link active text-left" data-toggle="tab" id="homeTab" href="#adminPanel">Admin</a>
@@ -53,9 +47,7 @@
                 <li class="nav-item">
                     <a class="nav-link text-left" data-toggle="tab" href="#userPanel">User</a>
                 </li>
-
             </ul>
-
         </div>
     </div>
 
@@ -66,9 +58,7 @@
 
                 <!-------------------- Закладка Админа справа-------------->
                 <div class="tab-pane fade show active" id="adminPanel" role="tabpanel">
-
                     <p class="fw-bold fs-4">Admin panel</p>
-
                     <nav>
                         <ul class="nav nav-tabs">
                             <li class="nav-item">
@@ -78,15 +68,12 @@
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#newUser">New User</a>
                             </li>
-
                         </ul>
                     </nav>
 
                     <!--------КНОПКА TABLE USERS Список юзеров-->
                     <div class="tab-content" id="nav-tabContent">
-                        <!-------------- Закладка горизонтальной панели с таблицей со всеми пользователями--------->
                         <div class="tab-pane fade show active" id="allUsers" role="tabpanel">
-
                             <h3><b>All Users</b></h3>
                             <table class="table table-striped bg-white border table-responsive table-hover">
                                 <thead>
@@ -101,7 +88,6 @@
                                     <th>Delete</th>
                                 </tr>
                                 </thead>
-
                                 <tbody id="tableUsers">
                                 <!----Скрипт--->
                                 </tbody>
@@ -109,19 +95,15 @@
 
 
                             <!-------------------------МОДАЛЬНОЕ ОКНО ДЛЯ EDIT------------------>
-
                             <div class="modal" tabindex="-1" id="editModal"
                                  aria-labelledby="EditModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                     <div class="modal-content">
-
-                                        <!-- Заголовок модального окна EDIT -->
                                         <div class="modal-header">
                                             <h5 class="modal-title">Edit user</h5>
                                             <button type="button" class="close" data-dismiss="modal">&times;
                                             </button>
                                         </div>
-                                        <!---- Основное содержимое модального окна EDIT -->
                                         <div class="modal-body text-center">
                                             <div class="d-flex justify-content-center align-items-center container">
                                                 <div class="row">
@@ -186,8 +168,7 @@
                                                             <select multiple size="2"
                                                                     class="form-control"
                                                                     id="edit-roles" name="roles" required>
-                                                                <!--                                                                <option value="1">ADMIN</option>-->
-                                                                <!--                                                                <option value="2">USER</option>-->
+                                                                <!----Скрипт--->
                                                             </select>
                                                         </div>
 
@@ -210,8 +191,6 @@
                             </div>
 
                             <!----------------------------------------------Модальное окно для удаления---------------------------------------------->
-                            <!--МОДАЛЬНОЕ ОКНО ДЛЯ DELETE-->
-
                             <div class="modal" tabindex="-1" id="deleteModal"
                                  aria-labelledby="deleteModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -221,7 +200,6 @@
                                             <button type="button" class="close" data-dismiss="modal">&times;
                                             </button>
                                         </div>
-
                                         <div class="modal-body text-center">
                                             <div class="d-flex justify-content-center align-items-center container">
                                                 <div class="row">
@@ -300,8 +278,7 @@
                                                                     id="delete-roles"
                                                                     name="roles"
                                                                     disabled>
-                                                                <!--                                                                <option value="1">ADMIN</option>-->
-                                                                <!--                                                                <option value="2">USER</option>-->
+                                                                <!----Скрипт--->
                                                             </select>
                                                         </div>
 
@@ -311,9 +288,6 @@
                                                                     data-dismiss="modal">Close
                                                             </button>
                                                             <input type="submit" class="btn btn-danger" value="Delete">
-                                                            <!--                                                            <button type="submit" class="btn btn-danger">-->
-                                                            <!--                                                                Delete-->
-                                                            <!--                                                            </button>-->
                                                         </div>
                                                     </form>
                                                 </div>
@@ -323,14 +297,10 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- КНОПКА NEW USER Форма для добавления нового юзера-->
-                        <!--Это блок под id "#nav-new_user", который раскрывается, когда нажимаешь вторую вкладку button "New user" под id "nav-new_user-tab"-->
                         <div class="tab-pane fade" id="newUser" role="tabpanel"
                              aria-labelledby="nav-new_user-tab">
-
                             <p>Add new user</p>
-
                             <div class="d-flex justify-content-center align-items-center container">
                                 <div class="row">
                                     <form id="formNew">
@@ -393,8 +363,7 @@
                                                 id="create-roles"
                                                 name="roles"
                                                 required>
-                                            <!--                                        <option value="1">ADMIN</option>-->
-                                            <!--                                        <option value="2">USER</option>-->
+                                            <!----Скрипт--->
                                         </select>
                                         <br>
                                         <input class="btn btn-info" type="submit" value="Add new user"/>

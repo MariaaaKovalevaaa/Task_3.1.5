@@ -6,7 +6,6 @@ function createNewUser() {
     formNew.addEventListener("submit", ev => {
         ev.preventDefault();
 
-        //приводим роли к виду java для отправки в БД
         let rolesForNewUser = [];
         for (let i = 0; i < formNew.roles.options.length; i++) {
             if (formNew.roles.options[i].selected)
@@ -32,13 +31,12 @@ function createNewUser() {
         }).then(() => {
             formNew.reset();
             getAllUsers();
-            $('#usersTable').click(); //клик по кнопке Users Table
+            $('#usersTable').click();
 
         });
     });
 }
 
-//Приведение загруженных ролей в формате java к виду JS. Их просто грузим сразу, как появляется форма
 function loadRolesForNewUser() {
     let selectAdd = document.getElementById("create-roles");
 

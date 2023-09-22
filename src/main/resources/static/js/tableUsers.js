@@ -9,7 +9,7 @@ function getAllUsers() {
         })
         .then(function (users) {
             let dataOfUsers = '';
-            let rolesString = ''; // Здесь будет результат функции rolesToString
+            let rolesString = '';
 
             const tableUsers = document.getElementById('tableUsers');
 
@@ -57,6 +57,6 @@ function rolesToString(roles) {
     for (const element of roles) {
         rolesString += (element.name.toString().replace('ROLE_', '') + ', ');
     }
-    rolesString = rolesString.substring(0, rolesString.length - 2); // -2, чтобы не показывать последнюю запятую с пробелом
+    rolesString = rolesString.substring(0, rolesString.length - 2);
     return rolesString;
 }

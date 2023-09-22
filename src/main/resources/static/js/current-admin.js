@@ -1,6 +1,6 @@
 const URLNavbarAdmin = 'http://localhost:8080/api/admin/showAccount/';
-const navbarBrandAdmin = document.getElementById('navbarBrandAdmin');//Элемент, где будет роль и почта текущего юзера
-const tableUserAdmin = document.getElementById('tableAdmin');//Элемент, где будет таблица текущего юзера
+const navbarBrandAdmin = document.getElementById('navbarBrandAdmin');
+const tableUserAdmin = document.getElementById('tableAdmin');
 
 function getCurrentAdmin() {
     fetch(URLNavbarAdmin)

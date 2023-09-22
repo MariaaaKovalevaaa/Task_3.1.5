@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.models;
 
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,15 +12,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * //UserDetails нужен д/того, чтобы преобразовать юзера из БД к определенному стандарту, чтобы его понял Спринг Секьюрити.
- * //Т.е. UserDetails - это такая обертка д/Entity-класса.
- * //UserDetails заведует самым основным: полномочиями - getAuthorities(), паролем - getPassword() и
- * // именем юзера - getUsername()
- * <p>
- * Аннотации @NotEmpty, @Size, @Email - это проверка на валидность.
- * Проверка на то, что объект типа User пришел от клиента корректный
- **/
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
@@ -52,12 +42,10 @@ public class User implements UserDetails {
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    //Здесь жадная загрузка, чтобы сразу грузились все дочерние зависимости юзера. fetch (извлечение)
     @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),//Это колонка текущей сущности, т.е. User.
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    //Это колонка второй (обратной) сущности, с которой связан User, т.е. Role.
-    private Collection <Role> roles;
+    private Collection<Role> roles;
 
     public User() {
     }
@@ -84,7 +72,6 @@ public class User implements UserDetails {
         this.username = username;
     }
 
-
     public String getLastname() {
         return lastname;
     }
@@ -92,7 +79,6 @@ public class User implements UserDetails {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
-
 
     public Byte getAge() {
         return age;
@@ -102,7 +88,6 @@ public class User implements UserDetails {
         this.age = age;
     }
 
-
     public String getEmail() {
         return email;
     }
@@ -110,7 +95,6 @@ public class User implements UserDetails {
     public void setEmail(String email) {
         this.email = email;
     }
-
 
     @Override
     public String getPassword() {
@@ -121,7 +105,6 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-
     public Collection<Role> getRoles() {
         return roles;
     }
@@ -129,7 +112,6 @@ public class User implements UserDetails {
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();

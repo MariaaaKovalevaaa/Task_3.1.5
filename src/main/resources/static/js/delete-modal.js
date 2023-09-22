@@ -22,7 +22,6 @@ function deleteUser() {
     });
 }
 
-//Приведение ролей к виду JS
 function loadRolesForDelete() {
     let selectDelete = document.getElementById("delete-roles");
     selectDelete.innerHTML = "";

@@ -13,8 +13,6 @@ import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 import java.util.Arrays;
 import java.util.List;
 
-//ApplicationListener - интерфейс, который позволяет обрабатывать ApplicationEvent события
-//ContextRefreshedEvent - публикуется автоматически после поднятия контекста
 @Component
 public class DatabaseInitializer implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -32,12 +30,10 @@ public class DatabaseInitializer implements ApplicationListener<ContextRefreshed
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
 
-        //Создали роль юзер
         Role userRole = new Role();
         userRole.setName("ROLE_USER");
         roleRepository.save(userRole);
 
-        //Создали роль админ
         Role adminRole = new Role();
         adminRole.setName("ROLE_ADMIN");
         roleRepository.save(adminRole);

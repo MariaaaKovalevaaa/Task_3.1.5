@@ -12,7 +12,6 @@ function editUser() {
     formEdit.addEventListener("submit", ev => {
         ev.preventDefault();
 
-        //Приведение ролей из вида js к виду java
         let rolesForEdit = [];
         for (let i = 0; i < formEdit.roles.options.length; i++) {
             if (formEdit.roles.options[i].selected) rolesForEdit.push({
@@ -42,7 +41,6 @@ function editUser() {
     });
 }
 
-//Приведение ролей к виду JS
 function loadRolesForEdit() {
     let selectEdit = document.getElementById("edit-roles");
     selectEdit.innerHTML = "";
